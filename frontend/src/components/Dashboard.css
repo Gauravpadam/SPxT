@@ -1,0 +1,66 @@
+/* Dashboard layout */
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .section {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  /* Alerts section */
+  .alerts h2, .news h2, .chatbot h2, .document-generator h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .alert-item, .news-item {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #222;
+    border-radius: 5px;
+  }
+  
+  .alert-item button, .document-generator button {
+    background-color: #0a84ff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* News section */
+  .news-item p {
+    margin: 5px 0 0;
+  }
+  
+  /* Chatbot section */
+  .chatbot input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 10px;
+  }
+  
+  .chatbot-response {
+    padding: 10px;
+    background-color: #222;
+    border-radius: 5px;
+  }
+  
+  /* Document Generator section */
+  .document-generator button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+  }
+  
