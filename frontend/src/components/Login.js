@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 
-const Login = ({ onLogin }) => {
+const Login = ({ onLogin, onSignup }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -34,7 +34,7 @@ const Login = ({ onLogin }) => {
           />
           <button type="submit">Login</button>
         </form>
-        <a href="#" className="forgot-password">Forgot password?</a>
+        <button className="signup-button" onClick={onSignup}>Signup</button>
       </div>
     </div>
   );
