@@ -1,0 +1,5 @@
+sqlalchemy==2.0.25
+fastapi==0.110.0
+psycopg2-binary~=2.8.6
+python-dotenv
+# Add more here

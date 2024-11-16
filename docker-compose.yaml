@@ -1,13 +1,24 @@
 services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    restart: always
+    env_file:
+      - .env.dev
+    ports:
+      - "8000:8000"
+
   db:
     image: postgres:17-alpine
     restart: always
     env_file:
       - .env.dev
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+
   pgadmin:
     image: dpage/pgadmin4
     restart: always
@@ -21,3 +32,7 @@ services:
 volumes:
   db_data:
   pgadmin-data:
+
+networks:
+  app-network:
+    driver: bridge
