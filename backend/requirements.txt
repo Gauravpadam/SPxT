@@ -1,5 +1,6 @@
 sqlalchemy==2.0.25
 fastapi==0.110.0
 psycopg2-binary~=2.8.6
+uvicorn==0.27.0
 python-dotenv
 # Add more here
