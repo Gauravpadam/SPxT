@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
-const Login = ({ onLogin, onSignup }) => {
+const Login = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = (e) => {
-    e.preventDefault();
-    // Basic validation (add more validation as needed)
-    if (username && password) {
-      onLogin(); // Call the function to move to the dashboard after login
+    e.preventDefault(); 
+    if(username === "test" && password === "test"){
+      navigate("/dashboard");
     }
+    else{
+      alert("Wrong username or password!");
+    }
+
   };
 
   return (
@@ -34,7 +39,7 @@ const Login = ({ onLogin, onSignup }) => {
           />
           <button type="submit">Login</button>
         </form>
-        <button className="signup-button" onClick={onSignup}>Signup</button>
+        <button className="signup-button" onClick={()=>navigate("/signup")}>Signup</button>
       </div>
     </div>
   );

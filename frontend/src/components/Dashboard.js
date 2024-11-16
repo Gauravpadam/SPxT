@@ -1,8 +1,11 @@
 import React from 'react';
 import './Dashboard.css';
+import Navbar from './Navbar';
 
 const Dashboard = () => {
   return (
+    <>
+    <Navbar/>
     <div className="dashboard">
       {/* Real-Time Alerts Section */}
       <div className="section alerts">
@@ -43,6 +46,8 @@ const Dashboard = () => {
         <button>Upload Existing Document</button>
       </div>
     </div>
+    </>
+    
   );
 };
 

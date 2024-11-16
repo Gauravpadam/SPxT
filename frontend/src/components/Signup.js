@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import './Signup.css';
+import { useNavigate } from 'react-router-dom';
 
-const Signup = ({ onSignup }) => {
+const Signup = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSignup = (e) => {
     e.preventDefault();
-    // Basic validation (add more validation as needed)
     if (username && password && password === confirmPassword) {
-      onSignup(); // Call the function to move to the dashboard after signup
+      navigate("/dashboard")
     }
   };
 
