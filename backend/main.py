@@ -1,5 +1,7 @@
+from fastapi.security.http import HTTPBase
+from starlette.types import Message
 from models.user_model import User_Model
-from schemas.user_schema import Register_User, Login_User
+from schemas.user_schema import Register_User, Login_User, Change_User_Pass
 from database import Base, engine, _Session
 from fastapi import FastAPI, Depends, HTTPException, status
 from auth_bearer import jwt_bearer
@@ -102,6 +104,7 @@ def login(user: Login_User, session: Session = Depends(get_session)):
 
 # Accessing the jwt via depends over here
 @app.get("/get_users")
+@token_blacklisted
 def get_users(token=Depends(jwt_bearer), session: Session = Depends(get_session)):
     query = "SELECT * FROM USERS"
     try:
@@ -110,6 +113,80 @@ def get_users(token=Depends(jwt_bearer), session: Session = Depends(get_session)
         return [user._mapping for user in users]
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/change_password")
+def change_password(password_update_form: Change_User_Pass, session: Session = Depends(get_session)):
+    # Fetch user with email and password
+    find_user_query = "SELECT email, password FROM USERS WHERE email= :email"
+
+    try:
+        # Fetch user
+        existing_user = session.execute(text(find_user_query), {
+            "email": password_update_form.email
+        }).fetchone()
+
+        if not existing_user:
+            raise HTTPException(status_code=404, detail="User not found.")
+
+        # Verify old password
+        if not verify_password(password_update_form.old_password, existing_user.password):
+            raise HTTPException(status_code=401, detail="Old password is not valid!")
+
+        # Hash the new password
+        hashed_password = get_hashed_password(password_update_form.new_password)
+
+        # Update password
+        user_update_query = """
+        UPDATE USERS
+        SET PASSWORD = :new_password
+        WHERE email = :email
+        """
+        session.execute(text(user_update_query), {
+            "new_password": hashed_password,
+            "email": existing_user.email
+        })
+        session.commit()
+
+        return {"message": "Password updated successfully."}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        session.rollback()
+        raise HTTPException(status_code=500, detail="Internal server error") from e
+
+@app.post("/logout")
+def logout(token = Depends(jwt_bearer), session: Session = Depends(get_session)):
+
+    payload = jwt.decode(token, JWT_SECRET_KEY, ALGORITHM)
+    user_id = payload['sub']
+
+    disable_token_query = """
+    UPDATE TOKENS
+    SET status = :status
+    WHERE USER_ID = :user_id AND access_token = :access_token
+    """
+
+    session.execute(text(disable_token_query), {
+        "status": False,
+        "user_id": user_id,
+        "access_token": token
+    })
+
+    # to_test = session.execute(text("SELECT status FROM TOKENS WHERE user_id = :user_id AND access_token = :access_token"), {
+    #     "user_id": user_id,
+    #     "access_token": token
+    # }).fetchone()
+
+    # print(to_test)
+
+    session.commit()
+    return {"message": "Logout successful"}
+
+
+
+
+
 
 
 # Main entry point for Uvicorn

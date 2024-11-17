@@ -9,3 +9,8 @@ class Register_User(BaseModel):
 class Login_User(BaseModel):
     email: str
     password: str
+
+class Change_User_Pass(BaseModel):
+    email: str
+    old_password: str
+    new_password: str
