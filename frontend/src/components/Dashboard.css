@@ -221,7 +221,7 @@ body {
   flex-direction: column;
   justify-content: space-between; /* Space elements evenly */
   height: 25%; /* Set the proportionate height */
-
+}
 .chatbot-message {
   background-color: rgba(15, 23, 42, 0.5);
   padding: 1rem;
