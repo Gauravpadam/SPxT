@@ -1,15 +1,61 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
 import { Shield, User } from 'lucide-react';
 
+const mockData = [
+  {
+    alert_name: 'name1',
+  },
+  {
+    alert_name: 'name2',
+  },
+  {
+    alert_name: 'name3',
+  },
+  {
+    alert_name: 'name4',
+  },
+  {
+    alert_name: 'name5',
+  },
+  {
+    alert_name: 'name6',
+  },
+  {
+    alert_name: 'name7',
+  },
+  {
+    alert_name: 'name8',
+  },
+  {
+    alert_name: 'name9',
+  },
+  {
+    alert_name: 'name10',
+  },
+];
+
 const Dashboard = () => {
+  const [alerts, setAlerts] = useState(mockData);
+
+  // useEffect(() => {
+  //   const fetchAlerts = async () => {
+  //     try {
+  //       const response = await axios.get('https://your-endpoint.com/alerts');
+  //       setAlerts(response.data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   fetchAlerts();
+  // }, []);
+
   return (
     <div className="app-container">
-      {/* Navbar */}
       <nav className="navbar">
         <div className="logo">
           <Shield size={24} />
-          <span>BorderlessBiz</span>
+          <span className="logo-text">BorderlessBiz</span>
         </div>
         <div className="nav-links">
           <a href="#home">Home</a>
@@ -23,30 +69,31 @@ const Dashboard = () => {
         </div>
       </nav>
 
-      {/* Main Content */}
       <main className="main-content">
-        {/* Left Column */}
         <div className="dashboard-left">
-          {/* Alerts Section */}
           <section className="section alerts-section">
             <h2>Real-Time Alerts</h2>
             <div className="alerts-container">
-              <div className="alert-item">
-                <span>Policy Breach Detected</span>
-                <button className="view-btn">View</button>
-              </div>
-              <div className="alert-item">
-                <span>Compliance Deadline Approaching</span>
-                <button className="view-btn">View</button>
-              </div>
-              <div className="alert-item">
-                <span>New Regulation Alert</span>
-                <button className="view-btn">View</button>
+              <div
+                className="alerts-list"
+                style={{
+                  maxHeight: '40vh',
+                  overflowY: 'auto',
+                  border: '1px solid #e0e0e0',
+                  borderRadius: '8px',
+                  padding: '10px',
+                }}
+              >
+                {alerts.map((alert, index) => (
+                  <div key={index} className="alert-item" style={{ marginBottom: '10px' }}>
+                    <span>{alert.alert_name}</span>
+                    <button className="view-btn">View</button>
+                  </div>
+                ))}
               </div>
             </div>
           </section>
 
-          {/* Chatbot Section */}
           <section className="section chatbot-section">
             <h2>Smart Compliance Chatbot</h2>
             <div className="chatbot-container">
@@ -54,18 +101,16 @@ const Dashboard = () => {
                 <span className="chatbot-label">Chatbot:</span>
                 <p>How can I assist you with compliance today?</p>
               </div>
-              <input 
-                type="text" 
-                placeholder="Ask me anything about compliance..." 
+              <input
+                type="text"
+                placeholder="Ask me anything about compliance..."
                 className="chatbot-input"
               />
             </div>
           </section>
         </div>
 
-        {/* Right Column */}
         <div className="dashboard-right">
-          {/* News Feed Section */}
           <section className="section news-section">
             <h2>Customized News Feed</h2>
             <div className="news-container">
@@ -84,17 +129,16 @@ const Dashboard = () => {
             </div>
           </section>
 
-          {/* Document Generator Section */}
           <section className="section generator-section">
             <h2>Document Generator</h2>
             <div className="generator-container">
               <div className="generator-item">
                 <span>Create New Compliance Document</span>
-                <button className="action-btn start-btn">Start</button>
+                <button className="action-btn">Start</button>
               </div>
               <div className="generator-item">
                 <span>Upload Existing Document</span>
-                <button className="action-btn upload-btn">Upload</button>
+                <button className="action-btn">Upload</button>
               </div>
             </div>
           </section>
