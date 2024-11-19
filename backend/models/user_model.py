@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
-from database import Base
+from database.database import Base
 
 class User_Model(Base):
     __tablename__ = "users" # This is the tablename ffs, not the classname

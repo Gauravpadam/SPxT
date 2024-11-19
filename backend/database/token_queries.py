@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from models.token_model import Token_Model
-from decorators import sqlalchemy_retry_decorator
+from decorators.retry_decorators import sqlalchemy_retry_decorator
 
 @sqlalchemy_retry_decorator
 def insert_token(session: Session, user_id: int, access_token: str, refresh_token: str):
