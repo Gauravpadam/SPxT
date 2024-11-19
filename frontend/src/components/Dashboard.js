@@ -58,10 +58,10 @@ const Dashboard = () => {
           <span className="logo-text">BorderlessBiz</span>
         </div>
         <div className="nav-links">
-          <a href="#home">Home</a>
-          <a href="#products">Products</a>
-          <a href="#notifications">Notifications</a>
-          <a href="#generator">Document Generator</a>
+          <a href="/home">Home</a>
+          <a href="/products">Products</a>
+          <a href="/notifications">Notifications</a>
+          <a href="/generator">Document Generator</a>
         </div>
         <div className="profile">
           <User size={24} />
