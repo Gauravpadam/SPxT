@@ -5,7 +5,7 @@ import './Login.css';
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: '',
   });
   const [errors, setErrors] = useState({});
@@ -13,8 +13,8 @@ const Login = () => {
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.username) {
-      newErrors.username = 'Username is required';
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
     }
     
     if (!formData.password) {
@@ -53,18 +53,40 @@ const Login = () => {
     }
 
     try {
-      // For demo purposes - replace with your actual login logic
-      if (formData.username === "test" && formData.password === "test") {
-        navigate('/dashboard');
-      } else {
-        setErrors({
-          submit: 'Invalid username or password'
-        });
+      const response = await fetch('http://localhost:8000/login',{
+        method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+          }),
+      })
+      // const response = await axios.post('/login', formData);
+      if(response.ok){ 
+      const data = await response.json();
+      const { access_token, refresh_token, user_id } = data;
+      localStorage.setItem('access_token', access_token);
+      localStorage.setItem('refresh_token', refresh_token);
+      localStorage.setItem('user_id', user_id);
+      navigate('/dashboard');
       }
+      else{
+        const errorData = await response.json();
+
+        if (response.status === 400) {
+          setErrors('Passwords do not match!'); 
+        } else if (response.status === 404) {
+          setErrors('User not found!'); 
+        } else {
+          setErrors(errorData.detail || 'Something went wrong. Please try again.'); // General error
+        }
+      }
+      
     } catch (error) {
-      setErrors({
-        submit: 'Login failed. Please try again.'
-      });
+      console.log("login error : " , error)
+      setErrors('Network error. Please check your connection.');
     }
   };
 
@@ -83,14 +105,14 @@ const Login = () => {
             </svg>
           </span>
           <input
-            type="text"
-            name="username"
+            type="email"
+            name="email"
             className="form-input"
-            placeholder="Username"
-            value={formData.username}
+            placeholder="Email"
+            value={formData.email}
             onChange={handleChange}
           />
-          {errors.username && <div className="error-message">{errors.username}</div>}
+          {errors.email && <div className="error-message">{errors.email}</div>}
         </div>
 
         <div className="form-group">
