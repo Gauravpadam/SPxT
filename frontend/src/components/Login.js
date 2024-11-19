@@ -71,7 +71,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="logo-section">
-        <h1>CompliGuard</h1>
+        <h1>BorderlessBiz</h1>
         <p>Sign in to continue</p>
       </div>
 
