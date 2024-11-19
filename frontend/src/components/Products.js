@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './Products.css';
 
 const Products = () => {
@@ -10,6 +10,15 @@ const Products = () => {
     desc: '',
     hs6: '',
   });
+
+   // Sample product data
+   const sampleProducts = Array.from({ length: 5 }, (_, index) => ({
+    id: `P${index + 1}`,
+    name: `Product ${index + 1}`,
+    desc: `Description of Product ${index + 1}`,
+    hs6: `HS6-${index + 1000}`,
+  }));
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -29,6 +38,10 @@ const Products = () => {
     setNewProduct({ id: '', name: '', desc: '', hs6: '' });
     setShowForm(false);
   };
+
+  useEffect(() => {
+    setProducts(sampleProducts);
+  }, []);
 
   return (
     <div className="products-container">
