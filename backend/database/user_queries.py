@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from models.user_model import User_Model
 from schemas.user_schema import Register_User
-from decorators import sqlalchemy_retry_decorator
+from decorators.retry_decorators import sqlalchemy_retry_decorator
 
 @sqlalchemy_retry_decorator
 def get_user_by_email(session: Session, email: str):

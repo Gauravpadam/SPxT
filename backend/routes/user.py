@@ -8,7 +8,7 @@ from services.user_service import (
     update_password,
     logout_user
 )
-from database import get_session
+from database.database import get_session
 from auth_bearer import jwt_bearer
 from utils import token_blacklisted
 

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from services.healthcheck_service import check_db_health
-from database import get_session
+from database.database import get_session
 
 router = APIRouter()
 

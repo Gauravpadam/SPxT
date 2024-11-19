@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, Integer, DateTime, Boolean
-from database import Base
+from database.database import Base
 import datetime
 
 class Token_Model(Base):

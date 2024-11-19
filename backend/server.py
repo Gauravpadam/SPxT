@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from database import Base, engine
+from database.database import Base, engine
 from routes import healthcheck, user
 
 Base.metadata.create_all(engine)
