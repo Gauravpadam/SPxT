@@ -5,17 +5,16 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [newProduct, setNewProduct] = useState({
-    name: '',
-    desc: '',
-    hs6: '',
+    product_name: '',
+    product_description: '',
+    itc_hs: '',
   });
-
   // Sample product data
-  const sampleProducts = Array.from({ length: 5 }, (_, index) => ({
-    name: `Product ${index + 1}`,
-    desc: `Description of Product ${index + 1}`,
-    hs6: `HS6-${index + 1000}`,
-  }));
+  // const sampleProducts = Array.from({ length: 5 }, (_, index) => ({
+  //   name: `Product ${index + 1}`,
+  //   desc: `Description of Product ${index + 1}`,
+  //   hs6: `HS6-${index + 1000}`,
+  // }));
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -31,11 +30,11 @@ const Products = () => {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    setProducts((prev) => [newProduct,...prev]);
-    setNewProduct({ name: '', desc: '', hs6: '' });
+    
+    
     try {
       const token = localStorage.getItem("access_token");
-      const user_id = localStorage.getItem("user_id");
+      // const user_id = localStorage.getItem("user_id");
       const response = await fetch('http://localhost:8000/add-product',{
         method:'POST',
         headers: {
@@ -43,28 +42,48 @@ const Products = () => {
            'Authorization': `Bearer ${token}`
         },
         body:JSON.stringify({ 
-          name:newProduct.name,
-          description:newProduct.desc,
-          hs6:newProduct.hs6,
-          user_id:user_id
+          name:newProduct.product_name,
+          description:newProduct.product_description,
+          hs6:newProduct.itc_hs,
+          // user_id:user_id
         }),
       })
-
+      
       if(response.ok){
         const data = await response.json()
         alert(data.message)
       }
+      setProducts((prev) => [newProduct,...prev]);
+      setNewProduct({ product_name: '', product_description: '', itc_hs: '' });
     } catch (error) {
       alert(error.message)
       console.log(error.message);
     }
-
-
     setShowForm(false);
   };
 
   useEffect(() => {
-    setProducts(sampleProducts);
+    const fetchProducts = async()=>{ 
+      const token = localStorage.getItem('access_token');
+      try {
+        const response = await fetch('http://localhost:8000/get-product-list',{ 
+          method:'GET',
+          headers:{
+            'Authorization':`Bearer ${token}`
+          }
+        })
+        if(response.ok){ 
+          const data = await response.json();
+          console.log(data);
+          setProducts(data);
+        }
+
+      } catch (error) {
+        console.log("Error ",error)
+      }
+    }
+    fetchProducts();
+    
   }, []);
 
   return (
@@ -87,10 +106,10 @@ const Products = () => {
       
         {products.map((product, index) => (
           <div key={index} className="product-card">
-            <h2>{product.name}</h2>
-            <p>{product.desc}</p>
+            <h2>{product.product_name}</h2>
+            <p>{product.product_description}</p>
             <p>
-              <strong>HS6 Code:</strong> {product.hs6}
+              <strong>HS6 Code:</strong> {product.itc_hs}
             </p>
           
           </div>
@@ -107,8 +126,8 @@ const Products = () => {
                 <label>Name</label>
                 <input
                   type="text"
-                  name="name"
-                  value={newProduct.name}
+                  name="product_name"
+                  value={newProduct.product_name}
                   onChange={handleInputChange}
                   required
                 />
@@ -116,8 +135,8 @@ const Products = () => {
               <div className="form-group">
                 <label>Description</label>
                 <textarea
-                  name="desc"
-                  value={newProduct.desc}
+                  name="product_description"
+                  value={newProduct.product_description}
                   onChange={handleInputChange}
                   required
                 ></textarea>
@@ -126,8 +145,8 @@ const Products = () => {
                 <label>HS6 Code</label>
                 <input
                   type="text"
-                  name="hs6"
-                  value={newProduct.hs6}
+                  name="itc_hs"
+                  value={newProduct.itc_hs}
                   onChange={handleInputChange}
                   required
                 />
