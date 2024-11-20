@@ -4,7 +4,7 @@ import time
 import boto3
 import datetime
 from dotenv import load_dotenv
-from backend.schemas.chatbot_schema import ChatBotQuery
+from schemas.chatbot_schema import ChatBotQuery
 from langchain_aws import BedrockEmbeddings, ChatBedrock
 from langchain_chroma import Chroma
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -72,4 +72,24 @@ def alert_llm_call(product_description, policy_change_description):
 # result_docs = ([doc.page_content for doc in relevant_docs])
 
 def chatbot_llm_call(query: str, query_timestamp: datetime.datetime, products_list, alerts_applied):
-    # Do mast mast things here
+    return "Hello"
+
+
+def form_list_llm_call(data):
+    combined_input = ('''You will be provided a list of form data that will have the form name in <form_name> XML tags and the form purpose in <form_purpose> XML tags along with form use case in <form_use_case>. 
+    You will also be given a prompt summarizing the user data in <input> XML tags.
+    Your task is to go through all the details and return the list of forms that the user has to fill for the given data in <form-list> XML tags.''')
+    
+    model = ChatBedrock(
+            model_id ="anthropic.claude-instant-v1",
+            client= bedrock_client
+        )
+    
+    messages = [
+        SystemMessage(content="You are an expert in the field of import export forms and procedures."),
+        HumanMessage(content=combined_input),
+    ]
+
+    response = model.invoke(messages)
+
+    return response.content
