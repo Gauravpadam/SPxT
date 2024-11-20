@@ -5,11 +5,11 @@ import re
 from fastapi import HTTPException
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
-
 from sqlalchemy.sql import text
 from conf import ALGORITHM, JWT_SECRET_KEY, JWT_REFRESH_SECRET_KEY, ACCESS_TOKEN_EXPIRE, REFRESH_TOKEN_EXPIRE
 import jwt
 from typing import Union, Any
+from auth_bearer import Jwt_Bearer
 
 assert (ACCESS_TOKEN_EXPIRE, REFRESH_TOKEN_EXPIRE) != (None, None)
 
@@ -93,3 +93,28 @@ def alert_extract_xml_content(input_string):
     alert_description_txt = alert_description_match.group(1) if alert_description_match else None
 
     return alert_headline_txt, alert_description_txt
+
+def extract_userid_from_token(token: Jwt_Bearer):
+    payload = jwt.decode(token, JWT_SECRET_KEY, ALGORITHM)
+    user_id = payload['sub']
+
+    return user_id
+
+def forms_list_extract_xml_content(input_string):
+    form_list_pattern = r"<form-list>(.*?)</form-list>"
+    form_list_match = re.search(form_list_pattern, input_string, re.DOTALL)
+
+    if form_list_match:
+        # Get the inner content of <form-list>
+        form_list_content = form_list_match.group(1).strip()
+
+        # Split the content by commas and strip any extra whitespace
+        form_names = [form.strip() for form in form_list_content.split(",")]
+
+        # Convert to desired JSON format
+        json_output = [{"form-name": form.capitalize()} for form in form_names]
+
+        return json_output
+    else:
+        # Return an empty list if <form-list> is not found
+        return []

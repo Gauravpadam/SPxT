@@ -1,7 +1,7 @@
 from typing import List
 from sqlalchemy import RowMapping
 from sqlalchemy.orm import Session
-from backend.schemas.chatbot_schema import ChatBotQuery
+from schemas.chatbot_schema import ChatBotQuery
 from database.chatbot_queries import get_policy_changes_for_user, get_product_list_for_users
 from models.policy_change_model import Policy_Change_Model
 from models.product_model import Product_Model
@@ -18,6 +18,6 @@ def process_chat_query(chatbot_query: ChatBotQuery, token, session: Session):
     query: str = chatbot_query.query
     query_timestamp: datetime.datetime = chatbot_query.timestamp
 
-    response = chatbot_llm_call(query, query_timestamp, product_list, alerts_applied)
-
+    # response = chatbot_llm_call(query, query_timestamp, product_list, alerts_applied)
+    response="Heloooooo"
     return response

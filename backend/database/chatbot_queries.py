@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
-from backend.database.alerts_queries import get_alerts_by_user_id
+from database.alerts_queries import get_alerts_by_user_id
 from database.product_queries import get_products_for_user
 from models.user_model import User_Model
 from schemas.user_schema import Register_User
