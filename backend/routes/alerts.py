@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from database.database import get_session
-from services.get_alerts import populate_alerts_service
+from services.get_alerts import get_alerts_service
 
 router = APIRouter()
 
