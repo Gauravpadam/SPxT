@@ -70,7 +70,10 @@ const Login = () => {
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
       localStorage.setItem('user_id', user_id);
-      navigate('/dashboard');
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 3000);
+      
       }
       else{
         const errorData = await response.json();

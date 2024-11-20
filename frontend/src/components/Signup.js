@@ -48,7 +48,7 @@ const Signup = () => {
         });
          if(response.ok){ 
           const data = await response.json();
-          alert(data)
+          alert(data.message)
           navigate('/login');
          }else{ 
 
