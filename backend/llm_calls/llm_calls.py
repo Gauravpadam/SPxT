@@ -2,7 +2,9 @@ import os
 import time
 
 import boto3
+import datetime
 from dotenv import load_dotenv
+from backend.schemas.chatbot_schema import ChatBotQuery
 from langchain_aws import BedrockEmbeddings, ChatBedrock
 from langchain_chroma import Chroma
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -42,7 +44,7 @@ def alert_llm_call(product_description, policy_change_description):
     response = model.invoke(messages)
     end_time = time.time()
     print(f"Time taken for LLM call: {end_time - start_time}")
-    
+
     return response.content
 
 # langfuse_handler = CallbackHandler(
@@ -68,3 +70,6 @@ def alert_llm_call(product_description, policy_change_description):
 # )
 # relevant_docs = retriever.invoke(query)
 # result_docs = ([doc.page_content for doc in relevant_docs])
+
+def chatbot_llm_call(query: str, query_timestamp: datetime.datetime, products_list, alerts_applied):
+    # Do mast mast things here
