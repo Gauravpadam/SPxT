@@ -35,13 +35,14 @@ const Signup = () => {
     if (validateForm()) {
       try {
 
-        const response = await fetch('http://localhost:8000/register', {
+        const response = await fetch('http://localhost:8000/signup', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             username: formData.username,
+            email: formData.email,
             password: formData.password,
           }),
         });
