@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from sqlalchemy.types import text
+from sqlalchemy.sql import text
 from models.user_model import User_Model
 from schemas.user_schema import Register_User
 from decorators.retry_decorators import sqlalchemy_retry_decorator
