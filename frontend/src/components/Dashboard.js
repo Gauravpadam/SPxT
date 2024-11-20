@@ -61,8 +61,17 @@ const Dashboard = () => {
     }
 
     const fetchAlerts = async () => {
+      const token = localStorage.getItem('access_token');
+      const userId = localStorage.getItem('user_id');
+      const str = `Bearer ${token}`
       try {
-        const response = await fetchWithAuth('/alerts');
+        const response = await fetch(`http://localhost:8000/get-alerts?userId=${userId}`,{ 
+          method:'GET',
+          headers : { 
+            'Authorization':`Bearer ${token}`,
+            'Content-Type':'application/json'
+          }
+        });
         if (response.ok) {
           const data = await response.json();
           setAlerts(data);
@@ -78,7 +87,7 @@ const Dashboard = () => {
     };
 
     checkAuth();
-    // fetchAlerts();
+    fetchAlerts();
     // isAuthorized()
   }, [navigate]);
 
@@ -164,7 +173,7 @@ const Dashboard = () => {
                 ) : (
                   alerts.map((alert, index) => (
                     <div key={index} className="alert-item">
-                      <span>{alert.alert_name}</span>
+                      <span>{alert.alert_headline}</span>
                       <button 
                         className="view-btn"
                         onClick={() => navigate(`/alert/${alert.id}`)}
