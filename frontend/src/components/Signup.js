@@ -1,7 +1,5 @@
-// Signup.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import './Signup.css';
 
 const Signup = () => {
@@ -27,6 +25,14 @@ const Signup = () => {
       setError('Please fill in all fields');
       return false;
     }
+    if (!formData.email.includes('@')) {
+      setError('Please enter a valid email address');
+      return false;
+    }
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return false;
+    }
     return true;
   };
 
@@ -34,39 +40,29 @@ const Signup = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-
         const response = await fetch('http://localhost:8000/signup', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            username: formData.username,
-            email: formData.email,
-            password: formData.password,
-          }),
+          body: JSON.stringify(formData),
         });
-         if(response.ok){ 
+
+        if (response.ok) {
           const data = await response.json();
-          alert(data)
-          navigate('/login');
-         }else{ 
-
-          const errorData = await response.json();
-
-        if (response.status === 400) {
-          setError('User already exists!');
+          alert('Account created successfully!');
+          navigate('/');  // Changed to root path
         } else {
-          setError(errorData.detail || 'Something went wrong. Please try again.');
+          const errorData = await response.json();
+          if (response.status === 400) {
+            setError('User already exists!');
+          } else {
+            setError(errorData.detail || 'Something went wrong. Please try again.');
+          }
         }
-
-         }
-
       } catch (error) {
-        
-        console.log("signup error : " , error)
+        console.error("signup error: ", error);
         setError('Network error. Please check your connection.');
-
       }
     }
   };
@@ -143,11 +139,8 @@ const Signup = () => {
         <div className="login-link">
           Already have an account?
           <a 
-            href="#" 
-            onClick={(e) => {
-              e.preventDefault();
-              
-            }}
+            onClick={() => navigate('/')}  // Changed to root path
+            style={{ cursor: 'pointer', marginLeft: '5px', color: '#007bff' }}
           >
             Sign in
           </a>
