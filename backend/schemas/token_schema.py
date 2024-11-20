@@ -7,3 +7,7 @@ class Token_Schema(BaseModel):
 
 class Create_Token(BaseModel):
     user_id: str
+    access_token: str
+    refresh_token: str
+    status: bool
+    created_date: datetime.datetime
