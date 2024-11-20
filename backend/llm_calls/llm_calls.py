@@ -6,23 +6,25 @@ from dotenv import load_dotenv
 from langchain_aws import BedrockEmbeddings, ChatBedrock
 from langchain_chroma import Chroma
 from langchain_core.messages import HumanMessage, SystemMessage
-from langfuse.callback import CallbackHandler
+# from langfuse.callback import CallbackHandler
 
 load_dotenv()
 
 bedrock_client = boto3.client(
             "bedrock-runtime",
             region_name="us-west-2",
+            aws_access_key_id="AKIAR25KQARGQO3ZUU2Z",
+            aws_secret_access_key="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",
         )
 
-def query(prompt):
+def alert_llm_call(product_description, policy_change_description):
     combined_input = (
         f'''
-        You will be provided a query in the ‹query> XML tags. You will also be provided with an array of topics in <topic> XML tags.
-        Your task is to identify if the question lies within the list of topics. If the question belongs to one of the topics you should respond with True in <response> XML tags. If the question doesnt belong to the list respond with False in <response> XML Tags.
-        Also respond with False if you think the question is related to a competitor or is comparative in nature or is out of scope for HERE Technologies.
-        ‹query> {prompt} </query>
-        <topic> [politics, finance] </topic>
+        You will be provided a trade policy in <trade_policy> XML tags, you will also be provided a product description in <product_description> XML tags.
+        Your task is to determine how the trade policy will affect the given product and make an alert which will be shown to the user on the dashboard.
+        Give the alert headline in <alert_headline> XML tags and the alert description in <alert_description> XML tags. Remember to keep headline under 100 characters and description under 500 characters.
+        <trade_policy_change> {policy_change_description} </trade_policy_change>
+        <product_description> {product_description} </product_description>
         '''
     )
 
@@ -32,17 +34,15 @@ def query(prompt):
         )
 
     messages = [
-        SystemMessage(content="You are a highly trained virtual assistant with a strong focus on maintaining privacy and confidentiality regarding company-specific information for HERE Technologies."),
+        SystemMessage(content="You are an expert in the field of trade policy and are determining how the trade policy will affect the given product to generate an Alert."),
         HumanMessage(content=combined_input),
     ]
 
     start_time = time.time()
     response = model.invoke(messages)
     end_time = time.time()
-
-    latency = end_time - start_time
-    print(f"Response: {response.content}")
-    print(f"Latency: {latency} seconds")
+    print(f"Time taken for LLM call: {end_time - start_time}")
+    
     return response.content
 
 # langfuse_handler = CallbackHandler(

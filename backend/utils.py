@@ -1,5 +1,7 @@
 from functools import wraps
+import json
 import os
+import re
 from fastapi import HTTPException
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
@@ -79,3 +81,15 @@ def token_blacklisted(func):
         return func(*args, **kwargs)
 
     return wrapper
+
+def alert_extract_xml_content(input_string):
+    alert_headline_pattern = r"<alert_headline>(.*?)</alert_headline>"
+    alert_description_pattern = r"<alert_description>(.*?)</alert_description>"
+
+    alert_headline_match = re.search(alert_headline_pattern, input_string, re.DOTALL)
+    alert_description_match = re.search(alert_description_pattern, input_string, re.DOTALL)
+
+    alert_headline_txt = alert_headline_match.group(1) if alert_headline_match else None
+    alert_description_txt = alert_description_match.group(1) if alert_description_match else None
+
+    return alert_headline_txt, alert_description_txt
