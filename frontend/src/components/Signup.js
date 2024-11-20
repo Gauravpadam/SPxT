@@ -48,7 +48,7 @@ const Signup = () => {
         });
          if(response.ok){ 
           const data = await response.json();
-          alert(data)
+          alert(data.message)
           navigate('/login');
          }else{ 
 
@@ -143,10 +143,10 @@ const Signup = () => {
         <div className="login-link">
           Already have an account?
           <a 
-            href="#" 
+            href="/login" 
             onClick={(e) => {
               e.preventDefault();
-              
+              navigate('/login')
             }}
           >
             Sign in
