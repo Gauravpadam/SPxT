@@ -4,3 +4,4 @@ class CreateProduct(BaseModel):
     name: str
     description: str
     hs6: str
+    user_id: int
