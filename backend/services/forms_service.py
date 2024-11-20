@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
-from models.forms_model import Forms_Model
-from schemas.forms_schema import FormRequestData
+from utils import forms_list_extract_xml_content
+from llm_calls.llm_calls import form_list_llm_call
+from models.forms import Forms_Model
+from schemas.form_schema import FormRequestData
 
 def get_forms(session: Session, data: FormRequestData):
     # Step 1: Fetch the necessary data from the database
@@ -47,5 +49,12 @@ def get_forms(session: Session, data: FormRequestData):
         f"{forms_list}</forms-list>"
     )
 
-    # (Optional) Print or log the final output
-    print(output)
+
+    response = form_list_llm_call(output)
+    final_output = forms_list_extract_xml_content(response)
+
+    return final_output
+
+def form_test():
+    test_data = '''<form-list>form1, form2, form3</form-list>'''
+    return forms_list_extract_xml_content(test_data)

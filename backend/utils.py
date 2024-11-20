@@ -101,10 +101,20 @@ def extract_userid_from_token(token: Jwt_Bearer):
     return user_id
 
 def forms_list_extract_xml_content(input_string):
-    form_list = r"<form-list>(.*?)</form-list>"
+    form_list_pattern = r"<form-list>(.*?)</form-list>"
+    form_list_match = re.search(form_list_pattern, input_string, re.DOTALL)
 
-    form_list = re.search(form_list, input_string, re.DOTALL)
+    if form_list_match:
+        # Get the inner content of <form-list>
+        form_list_content = form_list_match.group(1).strip()
 
-    form_list = form_list.group(1) if form_list else None
+        # Split the content by commas and strip any extra whitespace
+        form_names = [form.strip() for form in form_list_content.split(",")]
 
-    return form_list
+        # Convert to desired JSON format
+        json_output = [{"form-name": form.capitalize()} for form in form_names]
+
+        return json_output
+    else:
+        # Return an empty list if <form-list> is not found
+        return []
