@@ -43,7 +43,7 @@ def login_user(user: Login_User, session: Session):
 
     insert_token(session, existing_user_id, access_token, refresh_token)
 
-    return {"message": "Login successful!", "access_token": access_token, "refresh_token": refresh_token}
+    return {"message": "Login successful!", "access_token": access_token, "refresh_token": refresh_token, "user_id":existing_user_id}
 
 def get_all_users(session: Session):
     try:

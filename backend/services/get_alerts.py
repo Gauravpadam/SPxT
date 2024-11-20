@@ -28,7 +28,6 @@ def populate_alerts_service(session: Session):
             affected_users.add(product.user_id)
             # Make LLM call to get alert details
             alert_headline, alert_description = make_llm_call()
-            
             # Insert alert into the alerts table
             new_alert = Real_Time_Alerts(
                 alert_headline=alert_headline,
