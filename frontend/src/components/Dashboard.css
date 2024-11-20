@@ -1,3 +1,5 @@
+
+
 /* Dashboard.css */
 * {
   margin: 0;
@@ -112,6 +114,13 @@ body {
   color: #e2e8f0;
 }
 
+/* Real-Time Alerts */
+.real-time-alerts {
+  height: 25%;
+  overflow-y: auto;
+  max-height: calc(5 * 60px); /* Adjust height to show 5 items */
+}
+
 /* Alerts Section */
 .alerts-section {
   display: flex;
@@ -128,7 +137,6 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 10px;
-
 }
 
 .alert-item {
@@ -208,11 +216,11 @@ body {
   font-size: 0.875rem;
 }
 
-/* Chatbot Section */
+/* Smart Compliance Chatbot */
 .smart-compliance-chatbot-container {
   display: flex;
   flex-direction: column;
-  height: auto;
+  height: 50%;
   margin-top: 1.5rem;
 }
 
@@ -220,8 +228,9 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Space elements evenly */
-  height: 25%; /* Set the proportionate height */
+  height: 100%; /* Set the full height */
 }
+
 .chatbot-message {
   background-color: rgba(15, 23, 42, 0.5);
   padding: 1rem;
@@ -290,3 +299,4 @@ body {
     display: none;
   }
 }
+
