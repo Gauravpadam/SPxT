@@ -3,15 +3,20 @@ from models.policy_change_model import Policy_Change_Model
 from models.product_model import Product_Model
 from models.user_model import User_Model
 from models.real_time_alerts_model import Real_Time_Alerts
-from llm_calls.llm_calls import query
+from llm_calls.llm_calls import alert_llm_call
 import datetime
+from utils import alert_extract_xml_content
+from database.alerts_queries import get_alerts_by_user_id
 
-def make_llm_call():
-    # Test querying the model directly
-    prompt = "What is the capital of France?"
-    response = query(prompt)
-    print("Response from Llama3:", response)
-    return "Alert Headline", response
+def make_llm_call(product_description, policy_change_description):
+    response = alert_llm_call(product_description, policy_change_description)
+    alert_headline, alert_description = alert_extract_xml_content(response)
+    return alert_headline, alert_description
+
+def get_alerts_service(session: Session, user_id: int):
+    result = get_alerts_by_user_id(session, user_id)
+    print("Result",result) 
+    return result
 
 def populate_alerts_service(session: Session):
     # Query to get all policy changes
@@ -27,7 +32,8 @@ def populate_alerts_service(session: Session):
             # Add the user_id of the affected product to the set
             affected_users.add(product.user_id)
             # Make LLM call to get alert details
-            alert_headline, alert_description = make_llm_call()
+            alert_headline, alert_description = make_llm_call(product.product_description, policy_change.description)
+            print(alert_headline, alert_description)
             # Insert alert into the alerts table
             new_alert = Real_Time_Alerts(
                 alert_headline=alert_headline,

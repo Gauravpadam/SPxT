@@ -7,6 +7,5 @@ router = APIRouter()
 
 @router.get("/get-alerts")
 def get_alerts(userId, session: Session = Depends(get_session)):
-    response = populate_alerts_service(session)
-    return {response}
-
+    response = get_alerts_service(session,user_id=userId)
+    return response
