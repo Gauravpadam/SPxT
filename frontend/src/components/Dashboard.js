@@ -34,6 +34,32 @@ const Dashboard = () => {
       }
     };
 
+    const isAuthorized = async ()=>{ 
+      const token = localStorage.getItem('access_token');
+      const str = `Bearer ${token}`
+      console.log(str)
+
+      try {
+        const response = await fetch('http://localhost:8000/query_chatbot',{ 
+          method:'GET',
+          headers : { 
+            'Authorization':`Bearer ${token}`,
+            'Content-Type':'application/json'
+          }
+        })
+        console.log(response.status)
+        if(response.ok){ 
+          const data = await response.json();
+          console.log(data)
+        }
+        else{
+          alert('Response is not ok!')
+        }
+      } catch (error) {
+        alert("Error ",error.message);
+      }
+    }
+
     const fetchAlerts = async () => {
       try {
         const response = await fetchWithAuth('/alerts');
@@ -51,8 +77,9 @@ const Dashboard = () => {
       }
     };
 
-    // checkAuth();
+    checkAuth();
     // fetchAlerts();
+    // isAuthorized()
   }, [navigate]);
 
   const handleLogout = () => {
