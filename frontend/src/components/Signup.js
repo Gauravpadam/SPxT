@@ -143,7 +143,7 @@ const Signup = () => {
         <div className="login-link">
           Already have an account?
           <a 
-            href="#" 
+            href="/login" 
             onClick={(e) => {
               e.preventDefault();
               
