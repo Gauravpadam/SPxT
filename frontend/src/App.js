@@ -4,6 +4,8 @@ import Dashboard from './components/Dashboard';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Products from './components/Products';
+import FormGenerator from './components/FormGenerator';
+
 import { BrowserRouter as Router, Routes, Route,Navigate} from "react-router-dom";
 import AlertsView from './components/AlertsView';
 
@@ -29,9 +31,17 @@ function App() {
       <Route path="/products" element={
             isAuthenticated() ? <Products /> : <Navigate to="/login" />
           } />
+
       
  
       <Route path="/alerts-view" element={<AlertsView/>} />    
+
+
+    <Route path="/get_forms" element={
+            isAuthenticated() ? <FormGenerator /> : <Navigate to="/login" />
+          } />
+
+
     </Routes>
     
   </Router>

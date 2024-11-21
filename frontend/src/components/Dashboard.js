@@ -247,10 +247,10 @@ const Dashboard = () => {
             <h2>Document Generator</h2>
             <div className="generator-container">
               <div className="generator-item">
-                <span>Create New Compliance Document</span>
+                <span>Create New Forms</span>
                 <button 
                   className="action-btn"
-                  onClick={() => handleDocumentGeneration('new')}
+                  onClick={() => navigate('/get_forms')}
                 >
                   Start
                 </button>
