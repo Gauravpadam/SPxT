@@ -7,7 +7,7 @@ import Products from './components/Products';
 import FormGenerator from './components/FormGenerator';
 
 import { BrowserRouter as Router, Routes, Route,Navigate} from "react-router-dom";
-
+import AlertsView from './components/AlertsView';
 
 function App() {
   const isAuthenticated = () => {
@@ -32,11 +32,18 @@ function App() {
             isAuthenticated() ? <Products /> : <Navigate to="/login" />
           } />
 
+      
+ 
+      <Route path="/alerts-view" element={<AlertsView/>} />    
+
+
     <Route path="/get_forms" element={
             isAuthenticated() ? <FormGenerator /> : <Navigate to="/login" />
           } />
 
+
     </Routes>
+    
   </Router>
   );
 }

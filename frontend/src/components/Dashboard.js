@@ -6,8 +6,21 @@ import './Dashboard.css';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [alerts, setAlerts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [alerts, setAlerts] = useState([
+    {
+      alert_headline: 'name1',
+      alert_description: "desc1"
+    },
+    {
+      alert_headline: 'name2',
+      alert_description: "desc2"
+    },
+    {
+      alert_headline: 'name3',  // Changed from alert_name to alert_headline for consistency
+      alert_description: "desc3"
+    }
+  ]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [chatMessage, setChatMessage] = useState('');
   const [newsItems, setNewsItems] = useState([
@@ -34,42 +47,41 @@ const Dashboard = () => {
       }
     };
 
-    const isAuthorized = async ()=>{ 
+    const isAuthorized = async () => {
       const token = localStorage.getItem('access_token');
       const str = `Bearer ${token}`
       console.log(str)
 
       try {
-        const response = await fetch('http://localhost:8000/query_chatbot',{ 
-          method:'GET',
-          headers : { 
-            'Authorization':`Bearer ${token}`,
-            'Content-Type':'application/json'
+        const response = await fetch('http://localhost:8000/query_chatbot', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
           }
         })
         console.log(response.status)
-        if(response.ok){ 
+        if (response.ok) {
           const data = await response.json();
           console.log(data)
         }
-        else{
+        else {
           alert('Response is not ok!')
         }
       } catch (error) {
-        alert("Error ",error.message);
+        alert("Error ", error.message);
       }
     }
 
     const fetchAlerts = async () => {
       const token = localStorage.getItem('access_token');
       const userId = localStorage.getItem('user_id');
-      const str = `Bearer ${token}`
       try {
-        const response = await fetch(`http://localhost:8000/get-alerts?userId=${userId}`,{ 
-          method:'GET',
-          headers : { 
-            'Authorization':`Bearer ${token}`,
-            'Content-Type':'application/json'
+        const response = await fetch(`http://localhost:8000/get-alerts?userId=${userId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
           }
         });
         if (response.ok) {
@@ -87,8 +99,7 @@ const Dashboard = () => {
     };
 
     checkAuth();
-    fetchAlerts();
-    // isAuthorized()
+    console.log(alerts)
   }, [navigate]);
 
   const handleLogout = () => {
@@ -107,7 +118,6 @@ const Dashboard = () => {
       });
 
       if (response.ok) {
-        // Handle chat response
         setChatMessage('');
       }
     } catch (error) {
@@ -137,6 +147,11 @@ const Dashboard = () => {
     }
   };
 
+  const handleViewAlerts = () => {
+    navigate('/alerts-view', { state: {alerts} });
+   
+  };
+
   return (
     <div className="app-container">
       <nav className="navbar">
@@ -161,29 +176,31 @@ const Dashboard = () => {
       <main className="main-content">
         <div className="dashboard-left">
           <section className="section alerts-section">
-            <h2>Real-Time Alerts</h2>
+            <div className="alerts-header">
+              <h2>Real-Time Alerts</h2>
+              <button 
+                className="view-btn"
+                onClick={handleViewAlerts}
+              >
+                View All Alerts
+              </button>
+            </div>
             <div className="alerts-container">
-              <div className="alerts-list">
-                {loading ? (
-                  <div className="loading-spinner">Loading alerts...</div>
-                ) : error ? (
-                  <div className="error-message">{error}</div>
-                ) : alerts.length === 0 ? (
-                  <div className="no-alerts">No alerts to display</div>
-                ) : (
-                  alerts.map((alert, index) => (
+              {loading ? (
+                <div className="loading-spinner">Loading alerts...</div>
+              ) : error ? (
+                <div className="error-message">{error}</div>
+              ) : alerts.length === 0 ? (
+                <div className="no-alerts">No alerts to display</div>
+              ) : (
+                <div className="alerts-list">
+                  {alerts.map((alert, index) => (
                     <div key={index} className="alert-item">
                       <span>{alert.alert_headline}</span>
-                      <button 
-                        className="view-btn"
-                        onClick={() => navigate(`/alert/${alert.id}`)}
-                      >
-                        View
-                      </button>
                     </div>
-                  ))
-                )}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </section>
 
@@ -245,7 +262,6 @@ const Dashboard = () => {
                   id="document-upload"
                   hidden
                   onChange={(e) => {
-                    // Handle file upload
                     const file = e.target.files[0];
                     if (file) {
                       // Handle the file upload logic
