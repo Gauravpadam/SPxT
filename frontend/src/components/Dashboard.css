@@ -1,6 +1,4 @@
-
-
-/* Dashboard.css */
+/* General Reset */
 * {
   margin: 0;
   padding: 0;
@@ -9,7 +7,7 @@
 
 html, body {
   height: 100%;
-  overflow: hidden; /* Prevent body scrolling */
+  overflow: hidden;
 }
 
 body {
@@ -20,14 +18,15 @@ body {
 
 /* App Container */
 .app-container {
-  height: 100vh; /* Use viewport height */
+  height: 100vh;
   background-color: #0f172a;
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* Prevent container scrolling */
+  overflow: hidden;
+  width: 100vw;
+  margin: 0 auto;
 }
 
-/* Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -36,7 +35,7 @@ body {
   background-color: rgba(30, 41, 59, 0.5);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  flex-shrink: 0; /* Prevent navbar from shrinking */
+  flex-shrink: 0;
 }
 
 .logo {
@@ -76,26 +75,30 @@ body {
   color: #94a3b8;
 }
 
-/* Main Content */
 .main-content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
   padding: 1.5rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  overflow: hidden; /* Prevent main content scrolling */
-  flex-grow: 1; /* Allow main content to fill available space */
+  overflow: hidden;
+  flex-grow: 1;
+  width: 90vw;
+  margin-left: 70px !important
+  
 }
 
-.dashboard-left, 
+.dashboard-left,
 .dashboard-right {
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* Prevent side columns from scrolling */
+  overflow: hidden;
+  
 }
 
+<<<<<<< HEAD
+=======
 /* Section Styles */
+>>>>>>> bea5f17 (dashboard2)
 .section {
   background-color: rgba(30, 41, 59, 0.5);
   backdrop-filter: blur(10px);
@@ -114,24 +117,16 @@ body {
   color: #e2e8f0;
 }
 
-/* Real-Time Alerts */
-.real-time-alerts {
-  height: 25%;
-  overflow-y: auto;
-  max-height: calc(5 * 60px); /* Adjust height to show 5 items */
-}
-
-/* Alerts Section */
 .alerts-section {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  height: 100%; /* Ensure full height of the section */
+  height: 35%;
 }
 
 .alerts-container {
-  overflow-y: auto; /* Enable vertical scrolling */
-  max-height: calc(3 * 60px); /* Adjust height to show 3 items */
+  overflow-y: auto;
+  max-height: calc(3 * 60px);
   display: flex;
   flex-direction: column;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -148,11 +143,10 @@ body {
   border-radius: 12px;
   margin-bottom: 0.75rem;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  min-height: 50px; /* Consistent item height */
-  flex-shrink: 0; /* Prevent items from shrinking */
+  min-height: 50px;
+  flex-shrink: 0;
 }
 
-/* Scrollbar Styling */
 .alerts-container::-webkit-scrollbar {
   width: 8px;
 }
@@ -189,6 +183,7 @@ body {
 .news-section {
   display: flex;
   flex-direction: column;
+  height:70%;
 }
 
 .news-container {
@@ -216,19 +211,11 @@ body {
   font-size: 0.875rem;
 }
 
-/* Smart Compliance Chatbot */
-.smart-compliance-chatbot-container {
-  display: flex;
-  flex-direction: column;
-  height: 50%;
-  margin-top: 1.5rem;
-}
-
 .chatbot-section {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Space elements evenly */
-  height: 100%; /* Set the full height */
+  justify-content: space-between;
+  height: 60%;
 }
 
 .chatbot-message {
@@ -258,7 +245,6 @@ body {
   color: #64748b;
 }
 
-/* Document Generator Section */
 .generator-section {
   display: flex;
   flex-direction: column;
@@ -289,7 +275,6 @@ body {
   opacity: 0.9;
 }
 
-/* Responsive Design */
 @media (max-width: 280px) {
   .main-content {
     grid-template-columns: 1fr;
@@ -299,4 +284,3 @@ body {
     display: none;
   }
 }
-
