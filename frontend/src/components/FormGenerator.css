@@ -1,4 +1,19 @@
-/* General Container */
+.parent-div{ 
+  display: flex !important;
+  flex-direction: column !important;
+  width:100vw;
+  height: 80vh;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.child-2 { 
+  width: 80%; /* Full width of its parent container */
+  max-height: 70%;
+  overflow-y: auto;
+  background-color: var(--card-dark);
+}
 .products-container {
     width: 80vw;
     margin: 2rem auto;
@@ -25,6 +40,17 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     color: var(--text-primary);
   }
+
+  .selected-product {
+    background-color: var(--input-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    color: var(--text-primary);
+    width: 80%;
+    max-height: 10vh;
+    overflow-y: auto;
+}
   
   .product-card h2 {
     color: var(--primary-purple);
@@ -70,6 +96,34 @@
     margin: 0;
   }
   
+
+
+  .product-form-2 {
+    padding: 2rem;
+    border-radius: 16px;
+    width: 100%; /* Adjust to take full width of .child-2 */
+    box-sizing: border-box;
+  }
+ 
+  
+  .product-form-2 form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(600px, 2fr)); /* Two columns on wider screens */
+    gap: 1rem; /* Space between inputs */
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Ensure full width for inputs */
+  }
+
+  .button-row {
+    grid-column: span 2; /* Make button rows take the full width */
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.5rem;
+  }
   /* Product Form Overlay */
   .product-form-overlay {
     position: fixed;
@@ -83,21 +137,10 @@
     justify-content: center;
   }
   
-  .product-form {
-    background-color: var(--card-dark);
-    padding: 2rem;
-    border-radius: 16px;
-    width: 90%;
-    max-width: 400px;
-  }
-  
-  .product-form h2 {
+
+  .product-form-2 h2 {
     color: var(--primary-purple);
     margin-bottom: 1.5rem;
-  }
-  
-  .form-group {
-    margin-bottom: 1.25rem;
   }
   
   .form-group label {
@@ -131,6 +174,13 @@
     box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.1);
   }
   
+.form-group-check{
+  display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%; 
+}
+
   .submit-btn {
     background: linear-gradient(to right, var(--primary-purple-dark), var(--primary-purple));
     border: none;
@@ -146,14 +196,4 @@
     opacity: 0.9;
   }
   
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .products-container {
-      width: 95vw;
-    }
-  
-    .product-form {
-      width: 95%;
-    }
-  }
   

@@ -8,7 +8,7 @@ from decorators.retry_decorators import sqlalchemy_retry_decorator
 def get_products_for_user(user_id: int, session: Session):
 
     find_products_query = """
-        SELECT product_name, product_description, itc_hs from products
+        SELECT product_id, product_name, product_description, itc_hs from products
         WHERE user_id = :user_id
         """
 
