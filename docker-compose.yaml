@@ -11,6 +11,30 @@ services:
       - .env
     ports:
       - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    env_file:
+      - .env
+    ports:
+      - "3001:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    networks:
+      - app-network
 
   db:
     image: postgres:17-alpine
@@ -26,6 +50,8 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
 
   pgadmin:
     image: dpage/pgadmin4
@@ -36,6 +62,8 @@ services:
       - .env
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - app-network
 
   ollama:
     image: ollama/ollama:0.4.2
@@ -46,6 +74,8 @@ services:
       - .env
     volumes:
       - ollama-data:/root/.ollama
+    networks:
+      - app-network
 
   langfuse-server:
     image: langfuse/langfuse:2
@@ -53,7 +83,7 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "3000:3000" # Map port 3001 on the host to port 3001 in the container
+      - "3000:3000"
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
       - NEXTAUTH_SECRET=mysecret
@@ -71,6 +101,8 @@ services:
       - LANGFUSE_INIT_USER_EMAIL=${LANGFUSE_INIT_USER_EMAIL:-}
       - LANGFUSE_INIT_USER_NAME=${LANGFUSE_INIT_USER_NAME:-}
       - LANGFUSE_INIT_USER_PASSWORD=${LANGFUSE_INIT_USER_PASSWORD:-}
+    networks:
+      - app-network
 
 volumes:
   db_data:

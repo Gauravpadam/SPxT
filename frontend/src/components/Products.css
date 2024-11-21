@@ -1,0 +1,148 @@
+.products-list {
+  display: flex; /* Use flexbox for a vertical layout */
+  flex-direction: column; /* Arrange items in a column */
+  gap: 1.5rem; /* Space between products */
+  height: 70vh; /* Limit the height to make it scrollable */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 1rem; /* Add some padding for aesthetics */
+}
+
+.products-container {
+  width: 80vw;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: var(--card-dark);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Header Container */
+.header-container {
+  display: flex;
+  justify-content: flex-end; /* Align children to the right */
+  align-items: center;       /* Center vertically */
+  padding: 1rem;             /* Optional: space around the container */
+  padding-top: 0px;
+  margin-bottom: 2rem;
+  
+}
+.header-container h1 {
+  color: var(--primary-purple);
+  font-size: 2rem;
+}
+
+.add-product-btn {
+  background: linear-gradient(to right, var(--primary-purple-dark), var(--primary-purple));
+  border: none;
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  margin-left: auto;         /* Push the button as far right as possible */
+}
+.add-product-btn:hover {
+  opacity: 0.9;
+}
+
+/* Products List */
+/* .products-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  width: 90%;
+  margin: 0 auto;
+} */
+
+.product-card {
+  background-color: var(--input-bg);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: var(--text-primary);
+}
+
+.product-card h2 {
+  color: var(--primary-purple);
+  margin-bottom: 0.5rem;
+}
+
+.product-card p {
+  margin: 0.25rem 0;
+  color: var(--text-secondary);
+}
+
+/* Product Form Overlay */
+.product-form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-form {
+  background-color: var(--card-dark);
+  padding: 2rem;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.product-form h2 {
+  color: var(--primary-purple);
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.875rem;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.form-group textarea {
+  resize: none;
+  height: 100px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.1);
+}
+
+.submit-btn {
+  background: linear-gradient(to right, var(--primary-purple-dark), var(--primary-purple));
+  border: none;
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  opacity: 0.9;
+}

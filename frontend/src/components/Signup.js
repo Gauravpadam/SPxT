@@ -1,12 +1,15 @@
 // Signup.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import './Signup.css';
 
-const Signup = ({ onSignupSuccess }) => {
+const Signup = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    email: '',
     username: '',
     password: '',
-    confirmPassword: ''
   });
   const [error, setError] = useState('');
 
@@ -20,21 +23,51 @@ const Signup = ({ onSignupSuccess }) => {
   };
 
   const validateForm = () => {
-    if (!formData.username || !formData.password || !formData.confirmPassword) {
+    if (!formData.username || !formData.password || !formData.email) {
       setError('Please fill in all fields');
-      return false;
-    }
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
       return false;
     }
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      onSignupSuccess && onSignupSuccess(formData);
+      try {
+
+        const response = await fetch('http://localhost:8000/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: formData.username,
+            email: formData.email,
+            password: formData.password,
+          }),
+        });
+         if(response.ok){ 
+          const data = await response.json();
+          alert(data.message)
+          navigate('/login');
+         }else{ 
+
+          const errorData = await response.json();
+
+        if (response.status === 400) {
+          setError('User already exists!');
+        } else {
+          setError(errorData.detail || 'Something went wrong. Please try again.');
+        }
+
+         }
+
+      } catch (error) {
+        
+        console.log("signup error : " , error)
+        setError('Network error. Please check your connection.');
+
+      }
     }
   };
 
@@ -77,11 +110,11 @@ const Signup = ({ onSignupSuccess }) => {
               </svg>
             </div>
             <input
-              type="password"
-              name="password"
+              type="email"
+              name="email"
               className="form-input"
-              placeholder="Password"
-              value={formData.password}
+              placeholder="Email"
+              value={formData.email}
               onChange={handleChange}
             />
           </div>
@@ -94,10 +127,10 @@ const Signup = ({ onSignupSuccess }) => {
             </div>
             <input
               type="password"
-              name="confirmPassword"
+              name="password"
               className="form-input"
-              placeholder="Confirm Password"
-              value={formData.confirmPassword}
+              placeholder="Password"
+              value={formData.password}
               onChange={handleChange}
             />
           </div>
@@ -110,10 +143,10 @@ const Signup = ({ onSignupSuccess }) => {
         <div className="login-link">
           Already have an account?
           <a 
-            href="#" 
+            href="/login" 
             onClick={(e) => {
               e.preventDefault();
-              onSignupSuccess && onSignupSuccess();
+              navigate('/login')
             }}
           >
             Sign in
