@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, ArrowLeft, Search, Filter, User } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import { fetchWithAuth, clearAuthTokens } from './auth';
 
 
@@ -75,10 +75,10 @@ const AlertsView = () => {
           <span className="logo-text">BorderlessBiz</span>
         </div>
         <div className="nav-links">
-          <a href="/dashboard">Dashboard</a>
-          <a href="/products">Products</a>
-          <a href="/notifications" className="active">Notifications</a>
-          <a href="/generator">Document Generator</a>
+          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/products">Products</Link>
+          <Link to="/notifications" className="active">Notifications</Link>
+          <Link to="/generator">Document Generator</Link>
         </div>
         <div className="profile">
           <div className="profile-menu" onClick={handleLogout} style={{ cursor: 'pointer' }}>

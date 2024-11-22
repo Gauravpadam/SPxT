@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import { fetchWithAuth, clearAuthTokens } from './auth';
 import { Shield, User } from 'lucide-react';
 import './Dashboard.css';
@@ -147,27 +147,7 @@ const Dashboard = () => {
 
   };
 
-  const handleDocumentGeneration = async (type) => {
-    try {
-      const response = await fetchWithAuth(`/generate-document/${type}`, {
-        method: 'POST'
-      });
-
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `compliance-document-${type}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      }
-    } catch (error) {
-      console.error('Document generation error:', error);
-    }
-  };
+  
 
   const handleViewAlerts = () => {
     navigate('/notifications');
@@ -182,10 +162,10 @@ const Dashboard = () => {
           <span className="logo-text">BorderlessBiz</span>
         </div>
         <div className="nav-links">
-          <a href="/dashboard" className="active">Dashboard</a>
-          <a href="/products">Products</a>
-          <a href="/notifications">Notifications</a>
-          <a href="/generator">Document Generator</a>
+        <Link to="/dashboard" className="active">Dashboard</Link>
+          <Link to="/products">Products</Link>
+          <Link to="/notifications" >Notifications</Link>
+          <Link to="/generator">Document Generator</Link>
         </div>
         <div className="profile">
           <div className="profile-menu" onClick={handleLogout} style={{ cursor: 'pointer' }}>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchWithAuth, clearAuthTokens } from './auth';
 import { Shield, User } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import './Products.css';
 
 const Products = () => {
@@ -103,10 +103,10 @@ const Products = () => {
           <span className="logo-text">BorderlessBiz</span>
         </div>
         <div className="nav-links">
-          <a href="/dashboard" >Dashboard</a>
-          <a href="/products" className="active">Products</a>
-          <a href="/notifications">Notifications</a>
-          <a href="/generator">Document Generator</a>
+        <Link to="/dashboard">Dashboard</Link>
+          <Link to="/products" className="active">Products</Link>
+          <Link to="/notifications" >Notifications</Link>
+          <Link to="/generator">Document Generator</Link>
         </div>
         <div className="profile">
           <div className="profile-menu" onClick={handleLogout} style={{ cursor: 'pointer' }}>
