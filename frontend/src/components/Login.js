@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import './Login.css';
 
 const Login = () => {
@@ -139,7 +139,7 @@ const Login = () => {
         </button>
 
         <div className="signup-link">
-          Don't have an account? <a href="/signup">Create Account</a>
+          Don't have an account? <Link to="/signup">Create Account</Link>
         </div>
       </form>
     </div>

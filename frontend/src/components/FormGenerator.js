@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./FormGenerator.css";
 import ProductForm from "./ProductForm";
 import { fetchWithAuth, clearAuthTokens } from './auth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 import { Shield, User } from 'lucide-react';
 
 const FormGenerator = () => {
@@ -69,10 +69,10 @@ const FormGenerator = () => {
           <span className="logo-text">BorderlessBiz</span>
         </div>
         <div className="nav-links">
-          <a href="/dashboard" >Dashboard</a>
-          <a href="/products">Products</a>
-          <a href="/notifications">Notifications</a>
-          <a href="/generator" className="active">Document Generator</a>
+          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/products" >Products</Link>
+          <Link to="/notifications" >Notifications</Link>
+          <Link to="/generator" className="active">Document Generator</Link>
         </div>
         <div className="profile">
           <div className="profile-menu" onClick={handleLogout} style={{ cursor: 'pointer' }}>
