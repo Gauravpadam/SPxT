@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchWithAuth, clearAuthTokens } from './auth';
 import { Shield, User } from 'lucide-react';
@@ -22,6 +22,7 @@ const Dashboard = () => {
   ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [chatMessages, setChatMessages] = useState([{user:"Chatbot",message:"How can I assist you with compliance today?"}]);
   const [chatMessage, setChatMessage] = useState('');
   const [newsItems, setNewsItems] = useState([
     {
@@ -37,6 +38,15 @@ const Dashboard = () => {
       content: 'An overview of new compliance measures being adopted worldwide.'
     }
   ]);
+  const messagesEndRef = useRef(null);
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages]);
 
   useEffect(() => {
     const checkAuth = () => {
@@ -110,19 +120,31 @@ const Dashboard = () => {
   const handleChatSubmit = async (e) => {
     e.preventDefault();
     if (!chatMessage.trim()) return;
-
+    const newChat = {user:"User",message:chatMessage.trim()}
+    setChatMessages((prev)=>[...prev,newChat])
+    const token = localStorage.getItem("access_token")
     try {
-      const response = await fetchWithAuth('/chat', {
+      const response = await fetch('http://localhost:8000/chat', {
         method: 'POST',
-        body: JSON.stringify({ message: chatMessage })
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ query: chatMessage })
       });
-
-      if (response.ok) {
-        setChatMessage('');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+      const data = await response.json()
+      const botResponse = {user:"Chatbot",message:data.response}
+      setChatMessages((prev)=>[...prev,botResponse])
+      setChatMessage('');
     } catch (error) {
-      console.error('Chat error:', error);
+      const errorMessage = {user:"Chatbot",message:error.message}
+      setChatMessages((prev)=>[...prev,errorMessage])
+      setChatMessage('');
     }
+
   };
 
   const handleDocumentGeneration = async (type) => {
@@ -208,11 +230,18 @@ const Dashboard = () => {
             <h2>Smart Compliance Chatbot</h2>
             <div className="chatbot-container">
               <div className="chatbot-messages">
-                <div className="chatbot-message">
-                  <span className="chatbot-label">Chatbot:</span>
-                  <p>How can I assist you with compliance today?</p>
+                {chatMessages.map((response,index)=>(
+                <div key={index} className="chatbot-message">
+                  <span className="chatbot-label">{response.user}</span>
+                  <p>{response.message}</p>
                 </div>
+                ))}
+                 {/* Invisible div for scrolling */}
+                <div ref={messagesEndRef} />
               </div>
+
+
+
               <form onSubmit={handleChatSubmit} className="chatbot-input-form">
                 <input
                   type="text"
