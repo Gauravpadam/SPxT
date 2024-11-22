@@ -34,10 +34,10 @@ function App() {
 
       
  
-      <Route path="/alerts-view" element={<AlertsView/>} />    
+      <Route path="/notifications" element={<AlertsView/>} />    
 
 
-    <Route path="/get_forms" element={
+    <Route path="/generator" element={
             isAuthenticated() ? <FormGenerator /> : <Navigate to="/login" />
           } />
 

@@ -148,7 +148,7 @@ const Dashboard = () => {
   };
 
   const handleViewAlerts = () => {
-    navigate('/alerts-view', { state: {alerts} });
+    navigate('/notifications');
    
   };
 
@@ -250,7 +250,7 @@ const Dashboard = () => {
                 <span>Create New Forms</span>
                 <button 
                   className="action-btn"
-                  onClick={() => navigate('/get_forms')}
+                  onClick={() => navigate('/generator')}
                 >
                   Start
                 </button>

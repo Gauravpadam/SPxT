@@ -1,41 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Shield, ArrowLeft, Search, Filter } from 'lucide-react';
+import { Shield, ArrowLeft, Search, Filter, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { fetchWithAuth, clearAuthTokens } from './auth';
+
+
 import './AlertsView.css'
 const AlertsView = () => {
-  const location = useLocation(); const { alerts } = location.state || {}; 
+ 
   const navigate = useNavigate();
-  // const [alerts, setAlerts] = useState([
-  //   {
-  //     alert_headline: 'name1',
-  //     alert_description: "desc1",
-  //     severity: 'High',
-  //     date: '2024-03-20',
-  //     status: 'Active'
-  //   },
-  //   {
-  //     alert_headline: 'name2',
-  //     alert_description: "desc2",
-  //     severity: 'Medium',
-  //     date: '2024-03-19',
-  //     status: 'Pending'
-  //   },
-  //   {
-  //     alert_headline: 'name3',
-  //     alert_description: "desc3",
-  //     severity: 'Low',
-  //     date: '2024-03-18',
-  //     status: 'Resolved'
-  //   }
-  // ]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [alerts, setAlerts] = useState([
+    {
+      alert_headline: 'name1',
+      alert_description: "desc1",
+    },
+    {
+      alert_headline: 'name2',
+      alert_description: "desc2",
+    },
+    {
+      alert_headline: 'name3',
+      alert_description: "desc3",
+    }
+  ]);
+
 
   useEffect(() => {
     const fetchAlerts = async () => {
-      setLoading(true);
       const token = localStorage.getItem('access_token');
       const userId = localStorage.getItem('user_id');
       
@@ -57,54 +47,48 @@ const AlertsView = () => {
       } catch (error) {
         console.error('Error fetching alerts:', error);
         setError('Failed to load alerts. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
-   // fetchAlerts();
+  fetchAlerts();
   }, []);
+
+  const handleLogout = () => {
+    clearAuthTokens();
+    navigate('/login');
+  };
+
 
   const handleBack = () => {
     navigate('/dashboard');
   };
 
-  const filteredAlerts = alerts.filter(alert =>
-    alert.alert_headline.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    alert.alert_description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const getSeverityColor = (severity) => {
-    switch (severity.toLowerCase()) {
-      case 'high':
-        return 'text-red-500 bg-red-500/10';
-      case 'medium':
-        return 'text-yellow-500 bg-yellow-500/10';
-      case 'low':
-        return 'text-green-500 bg-green-500/10';
-      default:
-        return 'text-blue-500 bg-blue-500/10';
-    }
-  };
-
-  const getStatusColor = (status) => {
-    switch (status.toLowerCase()) {
-      case 'active':
-        return 'text-green-500 bg-green-500/10';
-      case 'pending':
-        return 'text-yellow-500 bg-yellow-500/10';
-      case 'resolved':
-        return 'text-blue-500 bg-blue-500/10';
-      default:
-        return 'text-gray-500 bg-gray-500/10';
-    }
-  };
-
   return (
     
     
-    <div>
-    <h1>
+  <div style={{width:"100vw",height:"100vh"}}>
+  
+    <nav className="navbar">
+        <div className="logo">
+          <Shield size={24} />
+          <span className="logo-text">BorderlessBiz</span>
+        </div>
+        <div className="nav-links">
+          <a href="/dashboard">Dashboard</a>
+          <a href="/products">Products</a>
+          <a href="/notifications" className="active">Notifications</a>
+          <a href="/generator">Document Generator</a>
+        </div>
+        <div className="profile">
+          <div className="profile-menu" onClick={handleLogout} style={{ cursor: 'pointer' }}>
+            <User size={24} />
+            <span>Logout</span>
+          </div>
+        </div>
+      </nav>
+   
+    
+    <h1 style={{marginTop:"40px",marginLeft:"170px"} }>
       Alerts
     </h1>
       <div className="alertview-container">
@@ -123,7 +107,10 @@ const AlertsView = () => {
       ))}
       {alerts.length === 0 && <p>No alerts yet.</p>}
     </div>
-  </div></div>
+  </div>
+  </div>
+
+
     
   );
 };

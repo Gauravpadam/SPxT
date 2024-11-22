@@ -2,7 +2,7 @@
   display: flex; /* Use flexbox for a vertical layout */
   flex-direction: column; /* Arrange items in a column */
   gap: 1.5rem; /* Space between products */
-  height: 70vh; /* Limit the height to make it scrollable */
+  height: 65vh; /* Limit the height to make it scrollable */
   overflow-y: auto; /* Enable vertical scrolling */
   padding: 1rem; /* Add some padding for aesthetics */
 }
@@ -16,15 +16,15 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
+
 /* Header Container */
 .header-container {
   display: flex;
   justify-content: flex-end; /* Align children to the right */
   align-items: center;       /* Center vertically */
   padding: 1rem;             /* Optional: space around the container */
-  padding-top: 0px;
   margin-bottom: 2rem;
-  
+  margin-right:2rem;
 }
 .header-container h1 {
   color: var(--primary-purple);
