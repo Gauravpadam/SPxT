@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./FormGenerator.css";
 import ProductForm from "./ProductForm";
 import { fetchWithAuth, clearAuthTokens } from './auth';
+import { useNavigate } from 'react-router-dom';
 import { Shield, User } from 'lucide-react';
 
 const FormGenerator = () => {
+  const navigate = useNavigate()
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [forms, setForms] = useState([]);

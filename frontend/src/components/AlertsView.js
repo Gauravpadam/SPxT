@@ -8,6 +8,7 @@ import './AlertsView.css'
 const AlertsView = () => {
  
   const navigate = useNavigate();
+  const [error,setError] = useState("")
   const [alerts, setAlerts] = useState([
     {
       alert_headline: 'name1',

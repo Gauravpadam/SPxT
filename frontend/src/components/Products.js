@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { fetchWithAuth, clearAuthTokens } from './auth';
 import { Shield, User } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import './Products.css';
 
 const Products = () => {
+  const navigate = useNavigate()
   const [products, setProducts] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [newProduct, setNewProduct] = useState({
