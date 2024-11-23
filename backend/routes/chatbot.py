@@ -13,7 +13,8 @@ router = APIRouter()
 @router.post("/chat")
 @token_blacklisted
 def query_chatbot(chatbot_query: ChatBotQuery, token = Depends(jwt_bearer), session: Session = Depends(get_session)):
-    return process_chat_query(chatbot_query, token, session)
+    response = process_chat_query(chatbot_query, token, session)
+    return {"response": response}
 
 @router.post("/testChat")
 def test_chat(query: str):
