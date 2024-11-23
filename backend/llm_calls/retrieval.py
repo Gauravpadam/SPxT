@@ -1,17 +1,19 @@
 import boto3
 
+from conf import AWS_ACCESS_KEY_ID, AWS_REGION, AWS_SECRET_ACCESS_KEY, KNOWLEDGE_BASE_ID
+
 def docs_retrieve(query):
     bedrock_agent_runtime = boto3.client(
     service_name = "bedrock-agent-runtime",
-    aws_access_key_id = 'AKIAR25KQARGQO3ZUU2Z',
-    aws_secret_access_key = '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',
-    region_name="us-west-2",
+    aws_access_key_id = AWS_ACCESS_KEY_ID,
+    aws_secret_access_key = AWS_SECRET_ACCESS_KEY,
+    region_name=AWS_REGION,
     )
     retrieved =  bedrock_agent_runtime.retrieve(
         retrievalQuery= {
             'text': query
         },
-        knowledgeBaseId='MMPN2MR7TQ',
+        knowledgeBaseId=KNOWLEDGE_BASE_ID,
         retrievalConfiguration = {
         "vectorSearchConfiguration": {
         "numberOfResults": 3,
