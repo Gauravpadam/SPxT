@@ -7,20 +7,7 @@ import "./Dashboard.css";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [alerts, setAlerts] = useState([
-    {
-      alert_headline: "name1",
-      alert_description: "desc1",
-    },
-    {
-      alert_headline: "name2",
-      alert_description: "desc2",
-    },
-    {
-      alert_headline: "name3",
-      alert_description: "desc3",
-    },
-  ]);
+  const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [chatMessages, setChatMessages] = useState([
@@ -61,6 +48,7 @@ const Dashboard = () => {
         navigate("/login");
         return;
       }
+      fetchAlerts();
     };
 
     const isAuthorized = async () => {
@@ -132,7 +120,7 @@ const Dashboard = () => {
     setChatMessages((prev) => [...prev, newChat]);
     const token = localStorage.getItem("access_token");
     try {
-      const response = await fetch(`${BASE_URL}/query_chatbot`, {
+      const response = await fetch(`${BASE_URL}/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
