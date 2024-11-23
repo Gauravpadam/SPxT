@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { BASE_URL } from "../conf/conf.js";
 import "./Login.css";
+import logo from './logo.png'; 
 
 const Login = () => {
   const navigate = useNavigate();
@@ -94,6 +95,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="logo-section">
+         <img src={logo} alt="Logo" className="logo-image" />
         <h1>BorderlessBiz</h1>
         <p>Sign in to continue</p>
       </div>
