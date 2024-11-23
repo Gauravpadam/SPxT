@@ -1,42 +1,48 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate,Link } from 'react-router-dom';
-import { fetchWithAuth, clearAuthTokens } from './auth';
-import { Shield, User } from 'lucide-react';
-import './Dashboard.css';
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { fetchWithAuth, clearAuthTokens } from "./auth";
+import { Shield, User } from "lucide-react";
+import { BASE_URL } from "../conf/conf.js";
+import "./Dashboard.css";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [alerts, setAlerts] = useState([
     {
-      alert_headline: 'name1',
-      alert_description: "desc1"
+      alert_headline: "name1",
+      alert_description: "desc1",
     },
     {
-      alert_headline: 'name2',
-      alert_description: "desc2"
+      alert_headline: "name2",
+      alert_description: "desc2",
     },
     {
-      alert_headline: 'name3',
-      alert_description: "desc3"
-    }
+      alert_headline: "name3",
+      alert_description: "desc3",
+    },
   ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [chatMessages, setChatMessages] = useState([{user:"Chatbot",message:"How can I assist you with compliance today?"}]);
-  const [chatMessage, setChatMessage] = useState('');
+  const [chatMessages, setChatMessages] = useState([
+    { user: "Chatbot", message: "How can I assist you with compliance today?" },
+  ]);
+  const [chatMessage, setChatMessage] = useState("");
   const [newsItems, setNewsItems] = useState([
     {
-      title: 'Latest Industry Update: Compliance Trends',
-      content: 'Stay ahead with the recent changes in compliance regulations affecting your industry.'
+      title: "Latest Industry Update: Compliance Trends",
+      content:
+        "Stay ahead with the recent changes in compliance regulations affecting your industry.",
     },
     {
-      title: 'Tech Advances in Compliance',
-      content: 'Discover how AI and machine learning are revolutionizing compliance management.'
+      title: "Tech Advances in Compliance",
+      content:
+        "Discover how AI and machine learning are revolutionizing compliance management.",
     },
     {
-      title: 'Global Compliance Updates',
-      content: 'An overview of new compliance measures being adopted worldwide.'
-    }
+      title: "Global Compliance Updates",
+      content:
+        "An overview of new compliance measures being adopted worldwide.",
+    },
   ]);
   const messagesEndRef = useRef(null);
   const scrollToBottom = () => {
@@ -50,106 +56,106 @@ const Dashboard = () => {
 
   useEffect(() => {
     const checkAuth = () => {
-      const token = localStorage.getItem('access_token');
+      const token = localStorage.getItem("access_token");
       if (!token) {
-        navigate('/login');
+        navigate("/login");
         return;
       }
     };
 
     const isAuthorized = async () => {
-      const token = localStorage.getItem('access_token');
-      const str = `Bearer ${token}`
-      console.log(str)
+      const token = localStorage.getItem("access_token");
+      const str = `Bearer ${token}`;
+      console.log(str);
 
       try {
-        const response = await fetch('http://localhost:8000/query_chatbot', {
-          method: 'GET',
+        const response = await fetch(`${BASE_URL}/query_chatbot`, {
+          method: "GET",
           headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        })
-        console.log(response.status)
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(response.status);
         if (response.ok) {
           const data = await response.json();
-          console.log(data)
-        }
-        else {
-          alert('Response is not ok!')
+          console.log(data);
+        } else {
+          alert("Response is not ok!");
         }
       } catch (error) {
         alert("Error ", error.message);
       }
-    }
+    };
 
     const fetchAlerts = async () => {
-      const token = localStorage.getItem('access_token');
-      const userId = localStorage.getItem('user_id');
+      const token = localStorage.getItem("access_token");
+      const userId = localStorage.getItem("user_id");
       try {
-        const response = await fetch(`http://localhost:8000/get-alerts?userId=${userId}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
+        const response = await fetch(
+          `${BASE_URL}/get-alerts?userId=${userId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          },
+        );
         if (response.ok) {
           const data = await response.json();
           setAlerts(data);
         } else {
-          throw new Error('Failed to fetch alerts');
+          throw new Error("Failed to fetch alerts");
         }
       } catch (error) {
-        console.error('Error fetching alerts:', error);
-        setError('Failed to load alerts. Please try again later.');
+        console.error("Error fetching alerts:", error);
+        setError("Failed to load alerts. Please try again later.");
       } finally {
         setLoading(false);
       }
     };
 
     checkAuth();
-    console.log(alerts)
+    console.log(alerts);
   }, [navigate]);
 
   const handleLogout = () => {
     clearAuthTokens();
-    navigate('/login');
+    navigate("/login");
   };
 
   const handleChatSubmit = async (e) => {
     e.preventDefault();
     if (!chatMessage.trim()) return;
-    const newChat = {user:"User",message:chatMessage.trim()}
-    setChatMessages((prev)=>[...prev,newChat])
-    const token = localStorage.getItem("access_token")
+    const newChat = { user: "User", message: chatMessage.trim() };
+    setChatMessages((prev) => [...prev, newChat]);
+    const token = localStorage.getItem("access_token");
     try {
-      const response = await fetch('http://localhost:8000/chat', {
-        method: 'POST',
-        headers:{
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+      const response = await fetch(`${BASE_URL}/query_chatbot`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ query: chatMessage })
+        body: JSON.stringify({ query: chatMessage }),
       });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const data = await response.json()
-      const botResponse = {user:"Chatbot",message:data.response}
-      setChatMessages((prev)=>[...prev,botResponse])
-      setChatMessage('');
+      const data = await response.json();
+      const botResponse = { user: "Chatbot", message: data.response };
+      setChatMessages((prev) => [...prev, botResponse]);
+      setChatMessage("");
     } catch (error) {
-      const errorMessage = {user:"Chatbot",message:error.message}
-      setChatMessages((prev)=>[...prev,errorMessage])
-      setChatMessage('');
+      const errorMessage = { user: "Chatbot", message: error.message };
+      setChatMessages((prev) => [...prev, errorMessage]);
+      setChatMessage("");
     }
-
   };
 
   const handleViewAlerts = () => {
-    navigate('/notifications');
-   
+    navigate("/notifications");
   };
 
   return (
@@ -160,13 +166,19 @@ const Dashboard = () => {
           <span className="logo-text">BorderlessBiz</span>
         </div>
         <div className="nav-links">
-        <Link to="/dashboard" className="active">Dashboard</Link>
+          <Link to="/dashboard" className="active">
+            Dashboard
+          </Link>
           <Link to="/products">Products</Link>
-          <Link to="/notifications" >Notifications</Link>
+          <Link to="/notifications">Notifications</Link>
           <Link to="/generator">Document Generator</Link>
         </div>
         <div className="profile">
-          <div className="profile-menu" onClick={handleLogout} style={{ cursor: 'pointer' }}>
+          <div
+            className="profile-menu"
+            onClick={handleLogout}
+            style={{ cursor: "pointer" }}
+          >
             <User size={24} />
             <span>Logout</span>
           </div>
@@ -178,10 +190,7 @@ const Dashboard = () => {
           <section className="section alerts-section">
             <div className="alerts-header">
               <h2>Real-Time Alerts</h2>
-              <button 
-                className="view-btn"
-                onClick={handleViewAlerts}
-              >
+              <button className="view-btn" onClick={handleViewAlerts}>
                 View All Alerts
               </button>
             </div>
@@ -208,11 +217,11 @@ const Dashboard = () => {
             <h2>Smart Compliance Chatbot</h2>
             <div className="chatbot-container">
               <div className="chatbot-messages">
-                {chatMessages.map((response,index)=>(
-                <div key={index} className="chatbot-message">
-                  <span className="chatbot-label">{response.user}</span>
-                  <p>{response.message}</p>
-                </div>
+                {chatMessages.map((response, index) => (
+                  <div key={index} className="chatbot-message">
+                    <span className="chatbot-label">{response.user}</span>
+                    <p>{response.message}</p>
+                  </div>
                 ))}
                 <div ref={messagesEndRef} />
               </div>
@@ -252,22 +261,18 @@ const Dashboard = () => {
             <div className="generator-container">
               <div className="generator-item">
                 <span>Create New Forms</span>
-                <button 
+                <button
                   className="action-btn"
-                  onClick={() => navigate('/generator')}
+                  onClick={() => navigate("/generator")}
                 >
                   Start
                 </button>
               </div>
               <div className="generator-item">
                 <span>Upload Existing Document</span>
-                <button 
-  className="action-btn coming-soon"
-  disabled
-  title=""
->
-  <span>Upload</span>
-</button>
+                <button className="action-btn coming-soon" disabled title="">
+                  <span>Upload</span>
+                </button>
               </div>
             </div>
           </section>
