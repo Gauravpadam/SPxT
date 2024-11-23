@@ -1,14 +1,12 @@
 from sqlalchemy.orm import Session
-from utils import forms_list_extract_xml_content
+from utils import add_form_links, form_list_extract_xml_content
 from llm_calls.llm_calls import form_list_llm_call
 from models.forms import Forms_Model
 from schemas.form_schema import FormRequestData
 
 def get_forms(session: Session, data: FormRequestData):
-    # Step 1: Fetch the necessary data from the database
     forms = session.query(Forms_Model.form_purpose, Forms_Model.form_use_case).all()
 
-    # Step 2: Create a prompt-like sentence summarizing the input data
     prompt = (
         f"The firm is a {data.firm_nature}. "
         f"It {'has' if data.has_iec else 'does not have'} an Importer-Exporter Code (IEC). "
@@ -29,7 +27,6 @@ def get_forms(session: Session, data: FormRequestData):
         f"{'Export-related obligations include: ' + data.export_obligations + '. ' if data.export_obligations else ''}"
     )
 
-    # Step 3: Format the fetched forms data into the specified XML-like structure
     forms_list = ""
     for i, form in enumerate(forms, start=1):
         forms_list += (
@@ -49,12 +46,13 @@ def get_forms(session: Session, data: FormRequestData):
         f"{forms_list}</forms-list>"
     )
 
-
     response = form_list_llm_call(output)
-    final_output = forms_list_extract_xml_content(response)
-
-    return final_output
+    final_output = form_list_extract_xml_content(response)
+    response_with_links = add_form_links(final_output)
+    return response_with_links
 
 def form_test():
-    test_data = '''<form-list>form1, form2, form3</form-list>'''
-    return forms_list_extract_xml_content(test_data)
+    test_data = '''<form-list><form>form-1</form><form>form2</form></form-list>'''
+    response = form_list_extract_xml_content(test_data)
+    fin_res = add_form_links(response)
+    return fin_res
