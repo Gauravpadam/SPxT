@@ -73,7 +73,7 @@ def token_blacklisted(func):
             "access_token": token
         }).fetchone()
 
-        print(token_status.status)
+        # print(token_status.status)
 
         # If the token is invalid or not found, raise an exception
         if not token_status or not token_status.status:
@@ -101,7 +101,7 @@ def extract_userid_from_token(token: Jwt_Bearer):
     user_id = payload['sub']
 
     return user_id
-    
+
 def chat_answer_extract_xml_content(input_string):
     chat_response_pattern = r"<answer>(.*?)</answer>"
 
@@ -114,6 +114,7 @@ def chat_answer_extract_xml_content(input_string):
 def form_list_extract_xml_content(input_string):
     form_list_pattern = r"<form-list>(.*?)</form-list>"
     form_pattern = r"<form>(.*?)</form>"
+    form_name_pattern = r"\((.*?)\)"
 
     form_list_match = re.search(form_list_pattern, input_string, re.DOTALL)
 
@@ -121,12 +122,17 @@ def form_list_extract_xml_content(input_string):
         form_list_content = form_list_match.group(1).strip()
         form_matches = re.findall(form_pattern, form_list_content)
 
-        json_output = [{"form-name": form.strip()} for form in form_matches]
+        json_output = []
+        for form in form_matches:
+            form_name_match = re.search(form_name_pattern, form)
+            if form_name_match:
+                form_name = form_name_match.group(1).strip()
+                json_output.append({"form-name": form_name})
 
         return json_output
     else:
         return []
-    
+
 def add_form_links(forms_list: list):
     updated_forms_list = []
 

@@ -60,7 +60,7 @@ def chatbot_llm_call(query: str):
     combined_input = (
         '''You are given a query in the <query> XML tags, you are also be provided relevant documents from DGFT website in <docs> xml tags Read through the query and also the provided content and answer the users question.
         Your task is to give the answer if you are highly confident in your answer. Else respond with NO ANSWER.
-        If the provided documents do not help you answe these questions then respond with INCORRECT CONTEXT. 
+        If the provided documents do not help you answe these questions then respond with INCORRECT CONTEXT.
         Give your response in <answer> XML tags
         <query>'''+query+'''</query>
         <docs>'''+docs+'''</docs>'''
@@ -81,14 +81,14 @@ def chatbot_llm_call(query: str):
 def form_list_llm_call(data):
     combined_input = ('''You will be provided a list of form data that will have the form name in <form_name> XML tags and the form purpose in <form_purpose> XML tags along with form use case in <form_use_case>.
     You will also be given a prompt summarizing the user data in <input> XML tags.
-    Your task is to go through all the details and return form names in <form> XML tags that the user has to fill for the given data in <form-list> XML tags. 
+    Your task is to go through all the details and return form names and a few words of description of what the form is for in context of user in <form> XML tags that the user has to fill for the given data in <form-list> XML tags. Always keep the form names as is in round brackets().
     '''+data)
-    
+
     model = ChatBedrock(
             model_id ="anthropic.claude-3-haiku-20240307-v1:0",
             client= bedrock_client
     )
-    
+
     messages = [
         SystemMessage(content="You are an expert in the field of import export forms and procedures for Government of India Ministry of Commerce & Industry Department of Commerce Directorate General of Foreign Trade."),
         HumanMessage(content=combined_input),
