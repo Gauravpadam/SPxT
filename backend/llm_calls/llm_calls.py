@@ -25,13 +25,14 @@ bedrock_client = boto3.client(
             aws_secret_access_key="GjAsAIN8P8CKWTQL4PLD28YVjy39gsZB5ETSsQsS",
         )
 
-def alert_llm_call(product_description, policy_change_description):
+def alert_llm_call(product_description, policy_change_description, chapter_details):
     combined_input = (
         f'''
-        You will be provided a trade policy in <trade_policy> XML tags, you will also be provided a product description in <product_description> XML tags.
+        You will be provided a trade policy in <trade_policy> XML tags and some policy chapter details in <chapter_details> XML tags, you will also be provided a product description in <product_description> XML tags.
         Your task is to determine how the trade policy will affect the given product and make an alert which will be shown to the user on the dashboard.
         Give the alert headline in <alert_headline> XML tags and the alert description in <alert_description> XML tags. Remember to keep headline under 100 characters and description under 500 characters.
         <trade_policy_change> {policy_change_description} </trade_policy_change>
+        <chapter_details> {chapter_details} </chapter_details>
         <product_description> {product_description} </product_description>
         '''
     )
@@ -56,12 +57,12 @@ def alert_llm_call(product_description, policy_change_description):
 def chatbot_llm_call(query: str):
     docs = docs_retrieve(query)
     combined_input = (
-        '''You will be given a query in the <query> XML tags, you will also be provided relevant documents from DGFT website in <docs> xml tags Read through the query and also the provided content and answer the users question.
-        You are supposed to give the answer if you are highly confident in your answer. Else respond with NO ANSWER.
+        '''You are given a query in the <query> XML tags, you are also be provided relevant documents from DGFT website in <docs> xml tags Read through the query and also the provided content and answer the users question.
+        Your task is to give the answer if you are highly confident in your answer. Else respond with NO ANSWER.
         If the provided documents do not help you answe these questions then respond with INCORRECT CONTEXT. 
-        Give your respond in <answer> XML tags
-        <query> {query} </query>
-        <docs> {docs} </docs>'''
+        Give your response in <answer> XML tags
+        <query>'''+query+'''</query>
+        <docs>'''+docs+'''</docs>'''
     )
     model = ChatBedrock(
             model_id ="anthropic.claude-3-haiku-20240307-v1:0",
@@ -73,7 +74,6 @@ def chatbot_llm_call(query: str):
     ]
 
     response = model.invoke(messages, config={"callbacks":[langfuse_handler]})
-
     return response.content
 
 
@@ -81,7 +81,7 @@ def form_list_llm_call(data):
     combined_input = ('''You will be provided a list of form data that will have the form name in <form_name> XML tags and the form purpose in <form_purpose> XML tags along with form use case in <form_use_case>. 
     You will also be given a prompt summarizing the user data in <input> XML tags.
     Your task is to go through all the details and return the list of comma seperated form names that the user has to fill for the given data in <form-list> XML tags.
-    {data}''')
+    '''+data)
     
     model = ChatBedrock(
             model_id ="anthropic.claude-3-haiku-20240307-v1:0",

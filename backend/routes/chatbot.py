@@ -10,10 +10,10 @@ from database.database import get_session
 
 router = APIRouter()
 
-@router.post("/query_chatbot")
+@router.post("/chat")
 @token_blacklisted
 def query_chatbot(chatbot_query: ChatBotQuery, token = Depends(jwt_bearer), session: Session = Depends(get_session)):
-    return process_chat_query(token, session)
+    return process_chat_query(chatbot_query, token, session)
 
 @router.post("/testChat")
 def test_chat(query: str):
