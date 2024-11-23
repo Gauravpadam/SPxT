@@ -15,7 +15,6 @@ def make_llm_call(product_description, policy_change_description, chapter_detail
 
 def get_alerts_service(session: Session, user_id: int):
     result = get_alerts_by_user_id(session, user_id)
-    print("Result",result) 
     return result
 
 def populate_alerts_service(session: Session):
@@ -33,7 +32,6 @@ def populate_alerts_service(session: Session):
             affected_users.add(product.user_id)
             # Make LLM call to get alert details
             alert_headline, alert_description = make_llm_call(product.product_description, policy_change.description, policy_change.chapter_details)
-            print(alert_headline, alert_description)
             # Insert alert into the alerts table
             new_alert = Real_Time_Alerts(
                 alert_headline=alert_headline,

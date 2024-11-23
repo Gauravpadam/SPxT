@@ -6,7 +6,7 @@ from schemas.form_schema import FormRequestData
 
 def get_forms(session: Session, data: FormRequestData):
     forms = session.query(Forms_Model.form_purpose, Forms_Model.form_use_case).all()
-
+    print("forms", forms)
     prompt = (
         f"The firm is a {data.firm_nature}. "
         f"It {'has' if data.has_iec else 'does not have'} an Importer-Exporter Code (IEC). "
@@ -28,7 +28,9 @@ def get_forms(session: Session, data: FormRequestData):
     )
 
     forms_list = ""
-    for i, form in enumerate(forms, start=1):
+    new_forms = session.query(Forms_Model).all()
+    for i, form in enumerate(new_forms, start=1):
+        print("form", form)
         forms_list += (
             f"<form-{i}>\n"
             f"  <name>{form.form_name}</name>\n"
