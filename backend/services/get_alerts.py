@@ -8,8 +8,8 @@ import datetime
 from utils import alert_extract_xml_content
 from database.alerts_queries import get_alerts_by_user_id
 
-def make_llm_call(product_description, policy_change_description):
-    response = alert_llm_call(product_description, policy_change_description)
+def make_llm_call(product_description, policy_change_description, chapter_details):
+    response = alert_llm_call(product_description, policy_change_description, chapter_details)
     alert_headline, alert_description = alert_extract_xml_content(response)
     return alert_headline, alert_description
 
@@ -32,7 +32,7 @@ def populate_alerts_service(session: Session):
             # Add the user_id of the affected product to the set
             affected_users.add(product.user_id)
             # Make LLM call to get alert details
-            alert_headline, alert_description = make_llm_call(product.product_description, policy_change.description)
+            alert_headline, alert_description = make_llm_call(product.product_description, policy_change.description, policy_change.chapter_details)
             print(alert_headline, alert_description)
             # Insert alert into the alerts table
             new_alert = Real_Time_Alerts(

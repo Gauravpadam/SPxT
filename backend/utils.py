@@ -118,3 +118,12 @@ def forms_list_extract_xml_content(input_string):
     else:
         # Return an empty list if <form-list> is not found
         return []
+    
+def chat_answer_extract_xml_content(input_string):
+    chat_response_pattern = r"<answer>(.*?)</answer>"
+
+    chat_response_match = re.search(chat_response_pattern, input_string, re.DOTALL)
+
+    chat_response_txt = chat_response_match.group(1) if chat_response_match else None
+
+    return chat_response_txt

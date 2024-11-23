@@ -16,4 +16,5 @@ langchain_chroma==0.1.4
 boto3==1.35.65
 langchain-aws==0.2.7
 langchain-core==0.3.17
+langfuse==2.54.1
 # Add more here
