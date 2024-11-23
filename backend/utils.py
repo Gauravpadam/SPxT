@@ -114,7 +114,6 @@ def chat_answer_extract_xml_content(input_string):
 def form_list_extract_xml_content(input_string):
     form_list_pattern = r"<form-list>(.*?)</form-list>"
     form_pattern = r"<form>(.*?)</form>"
-    form_name_pattern = r"\((.*?)\)"
 
     form_list_match = re.search(form_list_pattern, input_string, re.DOTALL)
 
@@ -122,12 +121,7 @@ def form_list_extract_xml_content(input_string):
         form_list_content = form_list_match.group(1).strip()
         form_matches = re.findall(form_pattern, form_list_content)
 
-        json_output = []
-        for form in form_matches:
-            form_name_match = re.search(form_name_pattern, form)
-            if form_name_match:
-                form_name = form_name_match.group(1).strip()
-                json_output.append({"form-name": form_name})
+        json_output = [{"form-name": form.strip()} for form in form_matches]
 
         return json_output
     else:
@@ -143,5 +137,5 @@ def add_form_links(forms_list: list):
             "form-link": "https://smbhavhackt.s3.us-east-1.amazonaws.com/Forms/"+form_name+".pdf"
         }
         updated_forms_list.append(updated_form)
-
+        print("updated_forms_list", updated_forms_list)
     return updated_forms_list

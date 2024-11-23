@@ -81,7 +81,7 @@ def chatbot_llm_call(query: str):
 def form_list_llm_call(data):
     combined_input = ('''You will be provided a list of form data that will have the form name in <form_name> XML tags and the form purpose in <form_purpose> XML tags along with form use case in <form_use_case>.
     You will also be given a prompt summarizing the user data in <input> XML tags.
-    Your task is to go through all the details and return form names and a few words of description of what the form is for in context of user in <form> XML tags that the user has to fill for the given data in <form-list> XML tags. Always keep the form names as is in round brackets().
+    Your task is to go through all the details and return unchanged form names in <form> XML tags that the user has to fill for the given data in <form-list> XML tags. REMEMBER TO NOT CHANGE THE FORM NAME EVEN A LITTLE.
     '''+data)
 
     model = ChatBedrock(
