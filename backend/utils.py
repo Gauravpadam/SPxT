@@ -1,4 +1,5 @@
 from functools import wraps
+from sqlalchemy.orm import Session
 import json
 import os
 import re
@@ -6,6 +7,7 @@ from fastapi import HTTPException
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from sqlalchemy.sql import text
+from models.forms import Forms_Model
 from conf import ALGORITHM, JWT_SECRET_KEY, JWT_REFRESH_SECRET_KEY, ACCESS_TOKEN_EXPIRE, REFRESH_TOKEN_EXPIRE
 import jwt
 from typing import Union, Any
@@ -124,3 +126,16 @@ def form_list_extract_xml_content(input_string):
         return json_output
     else:
         return []
+    
+def add_form_links(forms_list: list):
+    updated_forms_list = []
+
+    for form in forms_list:
+        form_name = form.get("form-name")
+        updated_form = {
+            "form-name": form_name,
+            "form-link": "https://smbhavhackt.s3.us-east-1.amazonaws.com/Forms/"+form_name+".pdf"
+        }
+        updated_forms_list.append(updated_form)
+
+    return updated_forms_list
