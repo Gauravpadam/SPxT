@@ -99,25 +99,6 @@ def extract_userid_from_token(token: Jwt_Bearer):
     user_id = payload['sub']
 
     return user_id
-
-def forms_list_extract_xml_content(input_string):
-    form_list_pattern = r"<form-list>(.*?)</form-list>"
-    form_list_match = re.search(form_list_pattern, input_string, re.DOTALL)
-
-    if form_list_match:
-        # Get the inner content of <form-list>
-        form_list_content = form_list_match.group(1).strip()
-
-        # Split the content by commas and strip any extra whitespace
-        form_names = [form.strip() for form in form_list_content.split(",")]
-
-        # Convert to desired JSON format
-        json_output = [{"form-name": form.capitalize()} for form in form_names]
-
-        return json_output
-    else:
-        # Return an empty list if <form-list> is not found
-        return []
     
 def chat_answer_extract_xml_content(input_string):
     chat_response_pattern = r"<answer>(.*?)</answer>"
@@ -127,3 +108,19 @@ def chat_answer_extract_xml_content(input_string):
     chat_response_txt = chat_response_match.group(1) if chat_response_match else None
 
     return chat_response_txt
+
+def form_list_extract_xml_content(input_string):
+    form_list_pattern = r"<form-list>(.*?)</form-list>"
+    form_pattern = r"<form>(.*?)</form>"
+
+    form_list_match = re.search(form_list_pattern, input_string, re.DOTALL)
+
+    if form_list_match:
+        form_list_content = form_list_match.group(1).strip()
+        form_matches = re.findall(form_pattern, form_list_content)
+
+        json_output = [{"form-name": form.strip()} for form in form_matches]
+
+        return json_output
+    else:
+        return []

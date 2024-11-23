@@ -4,6 +4,7 @@ import time
 import boto3
 import datetime
 from dotenv import load_dotenv
+from llm_calls.retrieval import docs_retrieve
 from conf import AWS_ACCESS_KEY_ID, AWS_REGION, AWS_SECRET_ACCESS_KEY
 from schemas.chatbot_schema import ChatBotQuery
 from langchain_aws import BedrockEmbeddings, ChatBedrock
@@ -80,7 +81,7 @@ def chatbot_llm_call(query: str):
 def form_list_llm_call(data):
     combined_input = ('''You will be provided a list of form data that will have the form name in <form_name> XML tags and the form purpose in <form_purpose> XML tags along with form use case in <form_use_case>.
     You will also be given a prompt summarizing the user data in <input> XML tags.
-    Your task is to go through all the details and return the list of comma seperated form names that the user has to fill for the given data in <form-list> XML tags.
+    Your task is to go through all the details and return form names in <form> XML tags that the user has to fill for the given data in <form-list> XML tags. 
     '''+data)
     
     model = ChatBedrock(
