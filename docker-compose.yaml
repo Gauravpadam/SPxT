@@ -6,35 +6,31 @@ services:
     restart: always
     depends_on:
       - db
-      - ollama
     env_file:
       - .env
     ports:
       - "8000:8000"
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
-    environment:
-      - CHOKIDAR_USEPOLLING=true
     networks:
       - app-network
+    profiles: [dev, prod]
 
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     restart: always
     volumes:
       - ./frontend:/app
       - /app/node_modules
     env_file:
-      - .env
+      - frontend/.env
     ports:
       - "3001:3000"
-    environment:
-      - CHOKIDAR_USEPOLLING=true
     networks:
       - app-network
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    profiles: [dev]
 
   db:
     image: postgres:17-alpine
@@ -47,11 +43,12 @@ services:
     env_file:
       - .env
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
       - app-network
+    profiles: [dev, prod]
 
   pgadmin:
     image: dpage/pgadmin4
@@ -64,6 +61,7 @@ services:
       - pgadmin-data:/var/lib/pgadmin
     networks:
       - app-network
+    profiles: [dev]
 
   langfuse-server:
     image: langfuse/langfuse:2
@@ -91,6 +89,7 @@ services:
       - LANGFUSE_INIT_USER_PASSWORD=${LANGFUSE_INIT_USER_PASSWORD:-}
     networks:
       - app-network
+    profiles: [dev]
 
 volumes:
   db_data:

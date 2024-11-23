@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from conf import S3_URL
 from routes import healthcheck, user, alerts, products, chatbot, forms
 from database.database import Base, engine
 
@@ -8,7 +9,7 @@ Base.metadata.create_all(engine)
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3001"],
+    allow_origins=[S3_URL],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -1,30 +1,31 @@
 // Signup.js
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { BASE_URL } from "../conf/conf.js";
 
-import './Signup.css';
+import "./Signup.css";
 
 const Signup = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: '',
-    username: '',
-    password: '',
+    email: "",
+    username: "",
+    password: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
-    if (error) setError('');
+    if (error) setError("");
   };
 
   const validateForm = () => {
     if (!formData.username || !formData.password || !formData.email) {
-      setError('Please fill in all fields');
+      setError("Please fill in all fields");
       return false;
     }
     return true;
@@ -34,11 +35,10 @@ const Signup = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-
-        const response = await fetch('http://localhost:8000/signup', {
-          method: 'POST',
+        const response = await fetch(`${BASE_URL}/signup`, {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             username: formData.username,
@@ -46,27 +46,24 @@ const Signup = () => {
             password: formData.password,
           }),
         });
-         if(response.ok){ 
+        if (response.ok) {
           const data = await response.json();
-          alert(data.message)
-          navigate('/login');
-         }else{ 
-
+          alert(data.message);
+          navigate("/login");
+        } else {
           const errorData = await response.json();
 
-        if (response.status === 400) {
-          setError('User already exists!');
-        } else {
-          setError(errorData.detail || 'Something went wrong. Please try again.');
+          if (response.status === 400) {
+            setError("User already exists!");
+          } else {
+            setError(
+              errorData.detail || "Something went wrong. Please try again.",
+            );
+          }
         }
-
-         }
-
       } catch (error) {
-        
-        console.log("signup error : " , error)
-        setError('Network error. Please check your connection.');
-
+        console.log("signup error : ", error);
+        setError("Network error. Please check your connection.");
       }
     }
   };
@@ -80,16 +77,22 @@ const Signup = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="signup-form">
-          {error && (
-            <div className="error-message">
-              {error}
-            </div>
-          )}
-          
+          {error && <div className="error-message">{error}</div>}
+
           <div className="input-group">
             <div className="input-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              <svg
+                xmlns="www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
               </svg>
             </div>
             <input
@@ -104,7 +107,12 @@ const Signup = () => {
 
           <div className="input-group">
             <div className="input-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <svg
+                xmlns="www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                 <path d="M7 11V7a5 5 0 0110 0v4"></path>
               </svg>
@@ -121,8 +129,18 @@ const Signup = () => {
 
           <div className="input-group">
             <div className="input-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+              <svg
+                xmlns="www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             </div>
             <input
@@ -142,10 +160,7 @@ const Signup = () => {
 
         <div className="login-link">
           Already have an account?
-          <Link to = "/login"
-          >
-            Sign in
-          </Link>
+          <Link to="/login">Sign in</Link>
         </div>
       </div>
     </div>
