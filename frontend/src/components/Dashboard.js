@@ -16,7 +16,7 @@ const Dashboard = () => {
       alert_description: "desc2"
     },
     {
-      alert_headline: 'name3',  // Changed from alert_name to alert_headline for consistency
+      alert_headline: 'name3',
       alert_description: "desc3"
     }
   ]);
@@ -147,8 +147,6 @@ const Dashboard = () => {
 
   };
 
-  
-
   const handleViewAlerts = () => {
     navigate('/notifications');
    
@@ -216,11 +214,8 @@ const Dashboard = () => {
                   <p>{response.message}</p>
                 </div>
                 ))}
-                 {/* Invisible div for scrolling */}
                 <div ref={messagesEndRef} />
               </div>
-
-
 
               <form onSubmit={handleChatSubmit} className="chatbot-input-form">
                 <input
@@ -266,23 +261,13 @@ const Dashboard = () => {
               </div>
               <div className="generator-item">
                 <span>Upload Existing Document</span>
-                <input
-                  type="file"
-                  id="document-upload"
-                  hidden
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                      // Handle the file upload logic
-                    }
-                  }}
-                />
                 <button 
-                  className="action-btn"
-                  onClick={() => document.getElementById('document-upload').click()}
-                >
-                  Upload
-                </button>
+  className="action-btn coming-soon"
+  disabled
+  title=""
+>
+  <span>Upload</span>
+</button>
               </div>
             </div>
           </section>

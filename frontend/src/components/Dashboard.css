@@ -260,7 +260,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   padding: 1rem;
-  max-height:300px;
+  max-height:400px;
   overflow-y: auto;
 }
 
@@ -420,4 +420,71 @@ body {
   .chat-submit-btn {
     width: 100%;
   }
+}
+/* Existing CSS remains the same, adding new styles for news section */
+.news-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.news-container {
+  filter: blur(8px);
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.news-section::before {
+  content: 'COMING SOON';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(15, 23, 42, 0.8);
+  color: #60A5FA;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  z-index: 10;
+  border: 2px solid #A78BFA;
+  text-align: center;
+}
+
+/* Grey upload button styles */
+.action-btn.coming-soon {
+  position: relative;
+  overflow: hidden;
+  background: #64748b !important; /* Grey background */
+  padding: 0.75rem 1.5rem; /* Making button bigger */
+  font-size: 1rem; /* Slightly larger font */
+}
+
+.action-btn.coming-soon:hover {
+  background: #64748b !important; /* Keep grey on hover */
+}
+
+.action-btn.coming-soon span {
+  display: inline-block;
+  transition: opacity 0.3s ease;
+  min-width: 80px; /* Ensure consistent width */
+}
+
+.action-btn.coming-soon:hover span {
+  opacity: 0;
+}
+
+.action-btn.coming-soon::after {
+  content: 'Coming Soon';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  font-size: 1rem;
+}
+
+.action-btn.coming-soon:hover::after {
+  opacity: 1;
 }
