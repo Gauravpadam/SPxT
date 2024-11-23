@@ -44,12 +44,13 @@ const FormGenerator = () => {
   const handleFormSubmit = async (formData) => {
     try {
       const token = localStorage.getItem("access_token");
-      const response = await fetch(`${BASE_URL}/get-form`, {
-        method: "GET",
+      const response = await fetch(`${BASE_URL}/get-forms`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
@@ -127,7 +128,14 @@ const FormGenerator = () => {
                     <h2>Forms</h2>
                     {forms.map((form, index) => (
                       <div key={index} className="form-item">
-                        <p>{form["form-name"]}</p>
+                        <a
+                          href={form["form-link"]}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                          download
+                        >
+                          {form["form-name"]}
+                        </a>
                       </div>
                     ))}
                   </div>
