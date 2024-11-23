@@ -17,7 +17,5 @@ def process_chat_query(chatbot_query: ChatBotQuery, token, session: Session):
     alerts_applied: List[dict] = get_policy_changes_for_user(session, user_id)
     query: str = chatbot_query.query
     query_timestamp: datetime.datetime = chatbot_query.timestamp
-
-    # response = chatbot_llm_call(query, query_timestamp, product_list, alerts_applied)
-    response="Heloooooo"
+    response = chatbot_llm_call(query)
     return response

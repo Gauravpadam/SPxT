@@ -9,7 +9,7 @@ router = APIRouter()
 @router.post("/get-forms")
 def get_forms_list(data: FormRequestData , session: Session = Depends(get_session)):
     response = get_forms(session,data=data)
-    return data.dict()
+    return response
 
 @router.get("/get-form")
 def test_form_route():
