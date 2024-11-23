@@ -4,6 +4,7 @@ import { Shield, User } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { BASE_URL } from "../conf/conf.js";
 import "./Products.css";
+import logo from './logo.png'; 
 
 const Products = () => {
   const navigate = useNavigate();
@@ -97,7 +98,12 @@ const Products = () => {
     <div style={{ width: "100vw", height: "100vh" }}>
       <nav className="navbar">
         <div className="logo">
-          <Shield size={24} />
+        <img 
+              src={logo} 
+              alt="Logo" 
+              width={40} 
+              height={40} 
+            />
           <span className="logo-text">BorderlessBiz</span>
         </div>
         <div className="nav-links">

@@ -3,7 +3,7 @@ import { Shield, ArrowLeft, Search, Filter, User } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import { fetchWithAuth, clearAuthTokens } from "./auth";
 import { BASE_URL } from "../conf/conf.js";
-
+import logo from './logo.png'; 
 import "./AlertsView.css";
 const AlertsView = () => {
   const navigate = useNavigate();
@@ -68,7 +68,12 @@ const AlertsView = () => {
     <div style={{ width: "100vw", height: "100vh" }}>
       <nav className="navbar">
         <div className="logo">
-          <Shield size={24} />
+        <img 
+              src={logo} 
+              alt="Logo" 
+              width={40} 
+              height={40} 
+            />
           <span className="logo-text">BorderlessBiz</span>
         </div>
         <div className="nav-links">

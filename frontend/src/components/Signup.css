@@ -20,6 +20,15 @@
   border: 1px solid rgba(148, 163, 184, 0.1);
 }
 
+.logo-image {
+  width: 100px; /* Adjust size as needed */
+  margin-bottom: 1rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
 .signup-header {
   text-align: center;
   margin-bottom: 2rem;
