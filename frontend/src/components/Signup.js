@@ -1,6 +1,6 @@
 // Signup.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 import './Signup.css';
 
@@ -142,15 +142,10 @@ const Signup = () => {
 
         <div className="login-link">
           Already have an account?
-          <a 
-            href="/login" 
-            onClick={(e) => {
-              e.preventDefault();
-              navigate('/login')
-            }}
+          <Link to = "/login"
           >
             Sign in
-          </a>
+          </Link>
         </div>
       </div>
     </div>

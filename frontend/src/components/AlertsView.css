@@ -1,0 +1,42 @@
+.alertview-list{
+  display: flex; /* Use flexbox for a vertical layout */
+  flex-direction: column; /* Arrange items in a column */
+  gap: 1.5rem; /* Space between products */
+  height: 70vh; /* Limit the height to make it scrollable */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 1rem; /* Add some padding for aesthetics */
+}
+
+.alertview-container{
+  width: 80vw;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: var(--card-dark);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  color: var(--primary-purple);
+  font-size: 2rem;
+}
+
+
+
+.alert-card{
+  background-color: var(--input-bg);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  color: var(--text-primary);
+}
+
+.alert-card h2 {
+  color: var(--primary-purple);
+  margin-bottom: 0.5rem;
+}
+
+.alert-card p {
+  margin: 0.25rem 0;
+  color: var(--text-secondary);
+}

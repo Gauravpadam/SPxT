@@ -1,0 +1,204 @@
+.parent-div{ 
+  display: flex !important;
+  flex-direction: column !important;
+  width:100vw;
+  height: 80vh;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.my-important-style {
+  margin-top: 100px !important;
+}
+
+.child-2 { 
+  width: 80%; /* Full width of its parent container */
+  max-height: 70%;
+  overflow-y: auto;
+  background-color: var(--card-dark);
+}
+.products-container {
+    width: 80vw;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: var(--card-dark);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Products List */
+  .products-list {
+    display: flex;
+    flex-direction: column; /* Vertical arrangement */
+    gap: 1.5rem;
+    max-height: 70vh; /* Limit height */
+    overflow-y: auto; /* Enable scrolling */
+    padding: 1rem;
+  }
+  
+  .product-card {
+    background-color: var(--input-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    color: var(--text-primary);
+  }
+
+  .selected-product {
+    background-color: var(--input-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    color: var(--text-primary);
+    width: 80%;
+    max-height: 10vh;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+  
+  .product-card h2 {
+    color: var(--primary-purple);
+    margin-bottom: 0.5rem;
+  }
+  
+  .product-card p {
+    margin: 0.25rem 0;
+    color: var(--text-secondary);
+  }
+  
+  .select-product-btn {
+    background: linear-gradient(to right, var(--primary-purple-dark), var(--primary-purple));
+    border: none;
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+  }
+  
+  .select-product-btn:hover {
+    opacity: 0.9;
+  }
+  
+  /* Selected Product & Forms Section */
+  .forms-list {
+    margin-top: 2rem;
+  }
+  
+  .form-item {
+    background-color: var(--input-bg);
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-item p {
+    color: var(--primary-purple);
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+
+
+  .product-form-2 {
+    padding: 2rem;
+    border-radius: 16px;
+    width: 100%; /* Adjust to take full width of .child-2 */
+    box-sizing: border-box;
+  }
+ 
+  
+  .product-form-2 form {
+    display: grid;
+    grid-template-columns: 1fr; /* Two columns on wider screens */
+    gap: 1rem; /* Space between inputs */
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Ensure full width for inputs */
+  }
+
+  .button-row {
+    grid-column: span 2; /* Make button rows take the full width */
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.5rem;
+  }
+  /* Product Form Overlay */
+  .product-form-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+
+  .product-form-2 h2 {
+    color: var(--primary-purple);
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    color: var(--text-secondary);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 0.875rem;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 1rem;
+  }
+  
+  .form-group textarea {
+    resize: none;
+    height: 100px;
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.1);
+  }
+  
+.form-group-check{
+  display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%; 
+}
+
+  .submit-btn {
+    background: linear-gradient(to right, var(--primary-purple-dark), var(--primary-purple));
+    border: none;
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.75rem 1.25rem;
+    cursor: pointer;
+  }
+  
+  .submit-btn:hover {
+    opacity: 0.9;
+  }
+  
+  

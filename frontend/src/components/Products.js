@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { fetchWithAuth, clearAuthTokens } from './auth';
+import { Shield, User } from 'lucide-react';
+import { useNavigate,Link } from 'react-router-dom';
 import './Products.css';
 
 const Products = () => {
+  const navigate = useNavigate()
   const [products, setProducts] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [newProduct, setNewProduct] = useState({
@@ -22,6 +26,11 @@ const Products = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleLogout = () => {
+    clearAuthTokens();
+    navigate('/login');
   };
 
   const handleAddProduct = () => {
@@ -87,16 +96,35 @@ const Products = () => {
   }, []);
 
   return (
-    <>
+    <div style={{width:"100vw",height:"100vh"}}>
+     <nav className="navbar">
+        <div className="logo">
+          <Shield size={24} />
+          <span className="logo-text">BorderlessBiz</span>
+        </div>
+        <div className="nav-links">
+        <Link to="/dashboard">Dashboard</Link>
+          <Link to="/products" className="active">Products</Link>
+          <Link to="/notifications" >Notifications</Link>
+          <Link to="/generator">Document Generator</Link>
+        </div>
+        <div className="profile">
+          <div className="profile-menu" onClick={handleLogout} style={{ cursor: 'pointer' }}>
+            <User size={24} />
+            <span>Logout</span>
+          </div>
+        </div>
+      </nav>
+
 
     {/* Header section */}
-    <div className="header-container">
+    <div className="header-container" >
         <button className="add-product-btn" onClick={handleAddProduct}>
           Add Product
         </button>
     </div>
       
-      <h1>Products</h1>
+      <h1 style={{marginLeft:"200px"}}>Products</h1>
 
     <div className="products-container">
       
@@ -159,7 +187,7 @@ const Products = () => {
         </div>
       )}
     </div>
-    </>
+    </div>
   );
 };
 

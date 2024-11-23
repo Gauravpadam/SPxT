@@ -4,8 +4,10 @@ import Dashboard from './components/Dashboard';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Products from './components/Products';
-import { BrowserRouter as Router, Routes, Route,Navigate} from "react-router-dom";
+import FormGenerator from './components/FormGenerator';
 
+import { BrowserRouter as Router, Routes, Route,Navigate} from "react-router-dom";
+import AlertsView from './components/AlertsView';
 
 function App() {
   const isAuthenticated = () => {
@@ -29,7 +31,19 @@ function App() {
       <Route path="/products" element={
             isAuthenticated() ? <Products /> : <Navigate to="/login" />
           } />
+
+      
+ 
+      <Route path="/notifications" element={<AlertsView/>} />    
+
+
+    <Route path="/generator" element={
+            isAuthenticated() ? <FormGenerator /> : <Navigate to="/login" />
+          } />
+
+
     </Routes>
+    
   </Router>
   );
 }

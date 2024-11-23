@@ -1,14 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate,Link } from 'react-router-dom';
 import { fetchWithAuth, clearAuthTokens } from './auth';
 import { Shield, User } from 'lucide-react';
 import './Dashboard.css';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [alerts, setAlerts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [alerts, setAlerts] = useState([
+    {
+      alert_headline: 'name1',
+      alert_description: "desc1"
+    },
+    {
+      alert_headline: 'name2',
+      alert_description: "desc2"
+    },
+    {
+      alert_headline: 'name3',  // Changed from alert_name to alert_headline for consistency
+      alert_description: "desc3"
+    }
+  ]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [chatMessages, setChatMessages] = useState([{user:"Chatbot",message:"How can I assist you with compliance today?"}]);
   const [chatMessage, setChatMessage] = useState('');
   const [newsItems, setNewsItems] = useState([
     {
@@ -24,6 +38,15 @@ const Dashboard = () => {
       content: 'An overview of new compliance measures being adopted worldwide.'
     }
   ]);
+  const messagesEndRef = useRef(null);
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages]);
 
   useEffect(() => {
     const checkAuth = () => {
@@ -34,42 +57,41 @@ const Dashboard = () => {
       }
     };
 
-    const isAuthorized = async ()=>{ 
+    const isAuthorized = async () => {
       const token = localStorage.getItem('access_token');
       const str = `Bearer ${token}`
       console.log(str)
 
       try {
-        const response = await fetch('http://localhost:8000/query_chatbot',{ 
-          method:'GET',
-          headers : { 
-            'Authorization':`Bearer ${token}`,
-            'Content-Type':'application/json'
+        const response = await fetch('http://localhost:8000/query_chatbot', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
           }
         })
         console.log(response.status)
-        if(response.ok){ 
+        if (response.ok) {
           const data = await response.json();
           console.log(data)
         }
-        else{
+        else {
           alert('Response is not ok!')
         }
       } catch (error) {
-        alert("Error ",error.message);
+        alert("Error ", error.message);
       }
     }
 
     const fetchAlerts = async () => {
       const token = localStorage.getItem('access_token');
       const userId = localStorage.getItem('user_id');
-      const str = `Bearer ${token}`
       try {
-        const response = await fetch(`http://localhost:8000/get-alerts?userId=${userId}`,{ 
-          method:'GET',
-          headers : { 
-            'Authorization':`Bearer ${token}`,
-            'Content-Type':'application/json'
+        const response = await fetch(`http://localhost:8000/get-alerts?userId=${userId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
           }
         });
         if (response.ok) {
@@ -87,8 +109,7 @@ const Dashboard = () => {
     };
 
     checkAuth();
-    fetchAlerts();
-    // isAuthorized()
+    console.log(alerts)
   }, [navigate]);
 
   const handleLogout = () => {
@@ -99,42 +120,38 @@ const Dashboard = () => {
   const handleChatSubmit = async (e) => {
     e.preventDefault();
     if (!chatMessage.trim()) return;
-
+    const newChat = {user:"User",message:chatMessage.trim()}
+    setChatMessages((prev)=>[...prev,newChat])
+    const token = localStorage.getItem("access_token")
     try {
-      const response = await fetchWithAuth('/chat', {
+      const response = await fetch('http://localhost:8000/chat', {
         method: 'POST',
-        body: JSON.stringify({ message: chatMessage })
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ query: chatMessage })
       });
-
-      if (response.ok) {
-        // Handle chat response
-        setChatMessage('');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+      const data = await response.json()
+      const botResponse = {user:"Chatbot",message:data.response}
+      setChatMessages((prev)=>[...prev,botResponse])
+      setChatMessage('');
     } catch (error) {
-      console.error('Chat error:', error);
+      const errorMessage = {user:"Chatbot",message:error.message}
+      setChatMessages((prev)=>[...prev,errorMessage])
+      setChatMessage('');
     }
+
   };
 
-  const handleDocumentGeneration = async (type) => {
-    try {
-      const response = await fetchWithAuth(`/generate-document/${type}`, {
-        method: 'POST'
-      });
+  
 
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `compliance-document-${type}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      }
-    } catch (error) {
-      console.error('Document generation error:', error);
-    }
+  const handleViewAlerts = () => {
+    navigate('/notifications');
+   
   };
 
   return (
@@ -145,10 +162,10 @@ const Dashboard = () => {
           <span className="logo-text">BorderlessBiz</span>
         </div>
         <div className="nav-links">
-          <a href="/dashboard" className="active">Dashboard</a>
-          <a href="/products">Products</a>
-          <a href="/notifications">Notifications</a>
-          <a href="/generator">Document Generator</a>
+        <Link to="/dashboard" className="active">Dashboard</Link>
+          <Link to="/products">Products</Link>
+          <Link to="/notifications" >Notifications</Link>
+          <Link to="/generator">Document Generator</Link>
         </div>
         <div className="profile">
           <div className="profile-menu" onClick={handleLogout} style={{ cursor: 'pointer' }}>
@@ -161,29 +178,31 @@ const Dashboard = () => {
       <main className="main-content">
         <div className="dashboard-left">
           <section className="section alerts-section">
-            <h2>Real-Time Alerts</h2>
+            <div className="alerts-header">
+              <h2>Real-Time Alerts</h2>
+              <button 
+                className="view-btn"
+                onClick={handleViewAlerts}
+              >
+                View All Alerts
+              </button>
+            </div>
             <div className="alerts-container">
-              <div className="alerts-list">
-                {loading ? (
-                  <div className="loading-spinner">Loading alerts...</div>
-                ) : error ? (
-                  <div className="error-message">{error}</div>
-                ) : alerts.length === 0 ? (
-                  <div className="no-alerts">No alerts to display</div>
-                ) : (
-                  alerts.map((alert, index) => (
+              {loading ? (
+                <div className="loading-spinner">Loading alerts...</div>
+              ) : error ? (
+                <div className="error-message">{error}</div>
+              ) : alerts.length === 0 ? (
+                <div className="no-alerts">No alerts to display</div>
+              ) : (
+                <div className="alerts-list">
+                  {alerts.map((alert, index) => (
                     <div key={index} className="alert-item">
                       <span>{alert.alert_headline}</span>
-                      <button 
-                        className="view-btn"
-                        onClick={() => navigate(`/alert/${alert.id}`)}
-                      >
-                        View
-                      </button>
                     </div>
-                  ))
-                )}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </section>
 
@@ -191,11 +210,18 @@ const Dashboard = () => {
             <h2>Smart Compliance Chatbot</h2>
             <div className="chatbot-container">
               <div className="chatbot-messages">
-                <div className="chatbot-message">
-                  <span className="chatbot-label">Chatbot:</span>
-                  <p>How can I assist you with compliance today?</p>
+                {chatMessages.map((response,index)=>(
+                <div key={index} className="chatbot-message">
+                  <span className="chatbot-label">{response.user}</span>
+                  <p>{response.message}</p>
                 </div>
+                ))}
+                 {/* Invisible div for scrolling */}
+                <div ref={messagesEndRef} />
               </div>
+
+
+
               <form onSubmit={handleChatSubmit} className="chatbot-input-form">
                 <input
                   type="text"
@@ -230,10 +256,10 @@ const Dashboard = () => {
             <h2>Document Generator</h2>
             <div className="generator-container">
               <div className="generator-item">
-                <span>Create New Compliance Document</span>
+                <span>Create New Forms</span>
                 <button 
                   className="action-btn"
-                  onClick={() => handleDocumentGeneration('new')}
+                  onClick={() => navigate('/generator')}
                 >
                   Start
                 </button>
@@ -245,7 +271,6 @@ const Dashboard = () => {
                   id="document-upload"
                   hidden
                   onChange={(e) => {
-                    // Handle file upload
                     const file = e.target.files[0];
                     if (file) {
                       // Handle the file upload logic
