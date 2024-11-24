@@ -67,16 +67,17 @@
 }
 
 .select-product-btn {
-    background: linear-gradient(
-        to right,
-        var(--primary-purple-dark),
-        var(--primary-purple)
-    );
+    box-shadow:
+        rgba(0, 0, 0, 0.4) 0px 2px 4px,
+        rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+        rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    margin-top: 1em;
+    background: linear-gradient(to right, #4b6ee9, #9254e5);
+    font-weight: bold;
     border: none;
     border-radius: 12px;
     color: var(--text-primary);
     font-size: 1rem;
-    font-weight: 600;
     padding: 0.75rem 1.25rem;
     cursor: pointer;
 }
