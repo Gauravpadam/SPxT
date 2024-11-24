@@ -28,18 +28,14 @@ function App() {
       <Route path="/dashboard"  element={
             <Dashboard /> 
           } />
-      <Route path="/products" element={
-            isAuthenticated() ? <Products /> : <Navigate to="/login" />
-          } />
+      <Route path="/products" element={<Products />} />
 
       
  
       <Route path="/notifications" element={<AlertsView/>} />    
 
 
-    <Route path="/generator" element={
-            isAuthenticated() ? <FormGenerator /> : <Navigate to="/login" />
-          } />
+    <Route path="/generator" element={ <FormGenerator /> } />
 
 
     </Routes>
