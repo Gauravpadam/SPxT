@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { BASE_URL } from "../conf/conf.js";
 import "./Login.css";
-import logo from './logo.png'; 
+import logo from "./logo.png";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -95,22 +95,50 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="logo-section">
-         <img src={logo} alt="Logo" className="logo-image" />
+        <img src={logo} alt="Logo" className="logo-image" />
         <h1>BorderlessBiz</h1>
         <p>Sign in to continue</p>
       </div>
 
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <span className="input-icon">
+      <form onSubmit={handleSubmit} className="login-form">
+        <div className="input-group">
+          <div className="input-icon">
             <svg
               xmlns="www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
             >
-              <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
             </svg>
-          </span>
+          </div>
+          <input
+            type="text"
+            name="username"
+            className="form-input"
+            placeholder="Username"
+            value={formData.username}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="input-group">
+          <div className="input-icon">
+            <svg
+              xmlns="www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0110 0v4"></path>
+            </svg>
+          </div>
           <input
             type="email"
             name="email"
@@ -119,36 +147,7 @@ const Login = () => {
             value={formData.email}
             onChange={handleChange}
           />
-          {errors.email && <div className="error-message">{errors.email}</div>}
         </div>
-
-        <div className="form-group">
-          <span className="input-icon">
-            <svg
-              xmlns="www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </span>
-          <input
-            type="password"
-            name="password"
-            className="form-input"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          {errors.password && (
-            <div className="error-message">{errors.password}</div>
-          )}
-        </div>
-
         {errors.submit && <div className="error-message">{errors.submit}</div>}
 
         <button type="submit" className="submit-btn">
