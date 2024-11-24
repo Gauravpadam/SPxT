@@ -1,5 +1,6 @@
 # BorderlessBiz
 ![BorderlessBiz logo](assets/logo-theme.png)
+
 <p align='center'>
 Simplifying cross-border regulations for e-commerce sellers
 </p>
