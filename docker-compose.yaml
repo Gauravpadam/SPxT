@@ -91,6 +91,19 @@ services:
       - app-network
     profiles: [dev]
 
+  nginx:
+    image: nginx:1.27.1-alpine
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    volumes:
+      - "./nginx.conf: /etc/nginx/nginx.conf"
+    profiles: [prod]
+    networks:
+      - app-network
+
 volumes:
   db_data:
   pgadmin-data:
