@@ -13,12 +13,6 @@ from langfuse.callback import CallbackHandler
 
 load_dotenv()
 
-
-langfuse_handler = CallbackHandler(
-  secret_key="sk-lf-c24addf1-e109-4a58-a132-def1b031d17b",
-  host="http://localhost:3000"
-)
-
 bedrock_client = boto3.client(
             "bedrock-runtime",
             region_name=AWS_REGION,
@@ -49,7 +43,7 @@ def alert_llm_call(product_description, policy_change_description, chapter_detai
     ]
 
     start_time = time.time()
-    response = model.invoke(messages, config={"callbacks":[langfuse_handler]})
+    response = model.invoke(messages)
     end_time = time.time()
     print(f"Time taken for LLM call: {end_time - start_time}")
 
@@ -74,7 +68,7 @@ def chatbot_llm_call(query: str):
         HumanMessage(content=combined_input),
     ]
 
-    response = model.invoke(messages, config={"callbacks":[langfuse_handler]})
+    response = model.invoke(messages)
     return response.content
 
 
@@ -94,6 +88,6 @@ def form_list_llm_call(data):
         HumanMessage(content=combined_input),
     ]
 
-    response = model.invoke(messages, config={"callbacks":[langfuse_handler]})
+    response = model.invoke(messages)
 
     return response.content
