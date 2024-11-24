@@ -1,6 +1,9 @@
 # BorderlessBiz
 ![BorderlessBiz logo](assets/logo-theme.png)
+
+<p align='center'>
 Simplifying cross-border regulations for e-commerce sellers
+</p>
 
 ## Live Deployment
 The solution is E2E deployed and hosted on AWS, You can access it using the following link:
