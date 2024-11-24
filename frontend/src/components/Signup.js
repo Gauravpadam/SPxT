@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { BASE_URL } from "../conf/conf.js";
-import logo from './logo.png'; 
+import logo from "./logo-theme.png";
 import "./Signup.css";
 
 const Signup = () => {
@@ -72,7 +72,7 @@ const Signup = () => {
     <div className="signup-container">
       <div className="signup-box">
         <div className="signup-header">
-        <img src={logo} alt="Logo" className="logo-image" />
+          <img src={logo} alt="Logo" className="logo-image" />
           <h1 className="signup-title">BorderlessBiz</h1>
           <p className="signup-subtitle">Create your account</p>
         </div>

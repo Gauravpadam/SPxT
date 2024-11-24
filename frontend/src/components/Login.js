@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { BASE_URL } from "../conf/conf.js";
 import "./Login.css";
-import logo from "./logo.png";
+import logo from "./logo-theme.png";
 
 const Login = () => {
   const navigate = useNavigate();

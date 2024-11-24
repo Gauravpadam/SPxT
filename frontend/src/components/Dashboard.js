@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { fetchWithAuth, clearAuthTokens } from "./auth";
 import { Shield, User } from "lucide-react";
 import { BASE_URL } from "../conf/conf.js";
-import logo from './logo.png'; 
+import logo from "./logo-theme.png";
 import "./Dashboard.css";
 
 const Dashboard = () => {
@@ -152,12 +152,7 @@ const Dashboard = () => {
       <nav className="navbar">
         <div className="logo">
           {/* <Shield size={24} /> */}
-                  <img 
-              src={logo} 
-              alt="Logo" 
-              width={40} 
-              height={40} 
-            />
+          <img src={logo} alt="Logo" width={40} height={40} />
           <span className="logo-text">BorderlessBiz</span>
         </div>
         <div className="nav-links">
@@ -255,7 +250,7 @@ const Dashboard = () => {
             <h2>Document Generator</h2>
             <div className="generator-container">
               <div className="generator-item">
-                <span>Create New Forms</span>
+                <span>Identify Required Forms</span>
                 <button
                   className="action-btn"
                   onClick={() => navigate("/generator")}
