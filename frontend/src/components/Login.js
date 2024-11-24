@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { BASE_URL } from "../conf/conf.js";
 import "./Login.css";
-import logo from "./logo.png";
+import logo from "./logo-theme.png";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -65,6 +65,7 @@ const Login = () => {
           password: formData.password,
         }),
       });
+
       // const response = await axios.post('/login', formData);
       if (response.ok) {
         const data = await response.json();
@@ -77,18 +78,19 @@ const Login = () => {
         const errorData = await response.json();
 
         if (response.status === 400) {
-          setErrors("Passwords do not match!");
+          setErrors({ submit: "Credentials mismatch!" });
         } else if (response.status === 404) {
-          setErrors("User not found!");
+          setErrors({ submit: "User not found!" });
         } else {
-          setErrors(
-            errorData.detail || "Something went wrong. Please try again.",
-          ); // General error
+          setErrors({
+            submit:
+              errorData.detail || "Something went wrong. Please try again.",
+          });
         }
       }
     } catch (error) {
       console.log("login error : ", error);
-      setErrors("Network error. Please check your connection.");
+      setErrors({ submit: "Network error. Please check your connection." });
     }
   };
 
@@ -118,11 +120,11 @@ const Login = () => {
             </svg>
           </div>
           <input
-            type="text"
-            name="username"
+            type="email"
+            name="email"
             className="form-input"
-            placeholder="Username"
-            value={formData.username}
+            placeholder="Email"
+            value={formData.email}
             onChange={handleChange}
           />
         </div>
@@ -140,16 +142,18 @@ const Login = () => {
             </svg>
           </div>
           <input
-            type="email"
-            name="email"
+            type="password"
+            name="password"
             className="form-input"
-            placeholder="Email"
-            value={formData.email}
+            placeholder="password"
+            value={formData.password}
             onChange={handleChange}
           />
+          {errors.password && (
+            <div className="error-message">{errors.password}</div>
+          )}
         </div>
         {errors.submit && <div className="error-message">{errors.submit}</div>}
-
         <button type="submit" className="submit-btn">
           Sign In
         </button>

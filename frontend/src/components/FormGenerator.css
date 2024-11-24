@@ -199,3 +199,13 @@
 .submit-btn:hover {
     opacity: 0.9;
 }
+
+a {
+    text-decoration: None;
+    color: #60a5fa;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #a855f7;
+}
