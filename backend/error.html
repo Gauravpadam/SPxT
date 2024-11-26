@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Error</title>
+        <script>
+            // Redirect to the index.html for unmatched paths
+            (function redirect() {
+                const currentUrl = window.location.href;
+                const baseUrl = `${window.location.protocol}//${window.location.host}`;
+                // Redirect to the base URL to let the SPA handle the routing
+                window.location.replace(baseUrl + "/");
+            })();
+        </script>
+    </head>
+    <body>
+        <h1>Error</h1>
+        <p>Redirecting you back to the main application...</p>
+    </body>
+</html>

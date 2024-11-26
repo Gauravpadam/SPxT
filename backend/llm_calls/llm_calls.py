@@ -54,7 +54,7 @@ def chatbot_llm_call(query: str):
     combined_input = (
         '''You are given a query in the <query> XML tags, you are also be provided relevant documents from DGFT website in <docs> xml tags Read through the query and also the provided content and answer the users question.
         Your task is to give the answer if you are highly confident in your answer. Else respond with NO ANSWER.
-        If the provided documents do not help you answe these questions then respond with INCORRECT CONTEXT.
+        If the provided documents do not help you answer these questions then respond with INCORRECT CONTEXT.
         Respond in the same language as the query.
         Give your response in <answer> XML tags
         <query>'''+query+'''</query>
