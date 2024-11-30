@@ -1,25 +1,15 @@
-import boto3
-
-from conf import AWS_ACCESS_KEY_ID, AWS_REGION, AWS_SECRET_ACCESS_KEY, KNOWLEDGE_BASE_ID
+from langchain_community.retrievers import AzureAISearchRetriever
+from conf import AZURE_AI_SEARCH_INDEX_NAME
 
 def docs_retrieve(query):
-    bedrock_agent_runtime = boto3.client(
-    service_name = "bedrock-agent-runtime",
-    aws_access_key_id = AWS_ACCESS_KEY_ID,
-    aws_secret_access_key = AWS_SECRET_ACCESS_KEY,
-    region_name=AWS_REGION,
+    retriever = AzureAISearchRetriever(
+        content_key="chunk", top_k=3, index_name=AZURE_AI_SEARCH_INDEX_NAME or ""
     )
-    retrieved =  bedrock_agent_runtime.retrieve(
-        retrievalQuery= {
-            'text': query
-        },
-        knowledgeBaseId=KNOWLEDGE_BASE_ID,
-        retrievalConfiguration = {
-        "vectorSearchConfiguration": {
-        "numberOfResults": 3,
-        "overrideSearchType": "SEMANTIC"}}
-    )
+
+    response = retriever.invoke(query)
     retrieved_string = ""
-    for i in range(len(retrieved['retrievalResults'])):
-        retrieved_string += retrieved['retrievalResults'][i]['content']['text']
+
+    for i, chunk in enumerate(response):
+        retrieved_string+=f'<Document {i + 1}>{chunk.page_content}</Document {i + 1}>'
+
     return retrieved_string
